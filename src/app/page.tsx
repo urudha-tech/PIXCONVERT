@@ -37,18 +37,20 @@ export default function Home() {
           <span className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
             ImageTools
           </span>
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-0.5 sm:gap-1">
             <button
               onClick={scrollToDropzone}
-              className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors"
+              className="rounded-lg px-2 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors sm:px-3"
             >
-              Convert to WebP
+              <span className="hidden sm:inline">Convert to WebP</span>
+              <span className="sm:hidden">WebP</span>
             </button>
             <Link
               href="/pdf"
-              className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors"
+              className="rounded-lg px-2 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors sm:px-3"
             >
-              Images to PDF
+              <span className="hidden sm:inline">Images to PDF</span>
+              <span className="sm:hidden">PDF</span>
             </Link>
           </div>
         </div>
@@ -121,7 +123,7 @@ export default function Home() {
               and 26% smaller than PNG, with no perceptible loss in quality at default settings.
             </p>
 
-            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            <div className="mt-8 grid gap-3 sm:grid-cols-3">
               {[
                 {
                   title: "Batch processing",

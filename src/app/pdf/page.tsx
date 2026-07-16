@@ -92,7 +92,7 @@ export default function PDFPage() {
 
   return (
     <main className="min-h-screen bg-white dark:bg-neutral-950">
-      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6">
+      <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/"
           className="inline-flex items-center gap-1.5 text-xs text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 mb-6"
