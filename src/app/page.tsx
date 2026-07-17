@@ -3,7 +3,7 @@
 import { useRef, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { ImageIcon, FileText, Film } from "lucide-react"
+import { ImageIcon, FileText, Film, Eraser } from "lucide-react"
 import { Hero } from "@/components/layout/Hero"
 import { UploadDropzone } from "@/components/upload/UploadDropzone"
 import { usePendingFiles } from "@/context/FilesContext"
@@ -59,6 +59,13 @@ export default function Home() {
               <span className="hidden sm:inline">Video to Images</span>
               <span className="sm:hidden">Video</span>
             </Link>
+            <Link
+              href="/remove-bg"
+              className="rounded-lg px-2 py-1.5 text-xs font-medium text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 transition-colors sm:px-3"
+            >
+              <span className="hidden sm:inline">Remove BG</span>
+              <span className="sm:hidden">BG</span>
+            </Link>
           </div>
         </div>
       </nav>
@@ -75,7 +82,7 @@ export default function Home() {
             <h2 className="text-base font-semibold text-neutral-900 dark:text-neutral-100">
               More tools
             </h2>
-            <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
               <div className="rounded-xl border border-neutral-100 p-4 dark:border-neutral-900 flex items-start gap-3">
                 <div className="mt-0.5 rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800">
                   <ImageIcon className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
@@ -126,6 +133,26 @@ export default function Home() {
                   </h3>
                   <p className="mt-0.5 text-xs text-neutral-500">
                     Extract frames from any video as WebP or PNG. Runs entirely in your browser.
+                  </p>
+                  <span className="mt-2 inline-block text-xs font-medium text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors">
+                    Open tool →
+                  </span>
+                </div>
+              </Link>
+
+              <Link
+                href="/remove-bg"
+                className="rounded-xl border border-neutral-100 p-4 dark:border-neutral-900 flex items-start gap-3 hover:border-neutral-300 dark:hover:border-neutral-700 transition-colors group"
+              >
+                <div className="mt-0.5 rounded-lg bg-neutral-100 p-2 dark:bg-neutral-800 group-hover:bg-neutral-200 dark:group-hover:bg-neutral-700 transition-colors">
+                  <Eraser className="h-4 w-4 text-neutral-600 dark:text-neutral-400" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+                    Remove Background
+                  </h3>
+                  <p className="mt-0.5 text-xs text-neutral-500">
+                    AI-powered background removal. Runs entirely in your browser.
                   </p>
                   <span className="mt-2 inline-block text-xs font-medium text-neutral-600 dark:text-neutral-400 group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors">
                     Open tool →

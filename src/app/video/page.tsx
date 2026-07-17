@@ -44,6 +44,8 @@ export default function VideoPage() {
   const [sizeIndex, setSizeIndex] = useState(0)
   const [quality, setQuality] = useState(90)
   const [skipPreview, setSkipPreview] = useState(false)
+  const [removeBg, setRemoveBg] = useState(false)
+  const [bgProgress, setBgProgress] = useState("")
 
   const [frames, setFrames] = useState<Frame[]>([])
   const [status, setStatus] = useState<"idle" | "extracting" | "done" | "error">("idle")
@@ -130,9 +132,33 @@ export default function VideoPage() {
 
     const extracted: Frame[] = []
 
+    let bgRemover: ((blob: Blob) => Promise<Blob>) | null = null
+    if (removeBg) {
+      setBgProgress("Loading AI model…")
+      const { removeBackground } = await import("@imgly/background-removal")
+      bgRemover = (blob: Blob) =>
+        removeBackground(blob, {
+          output: { format: format === "webp" ? "image/webp" : "image/png", quality: quality / 100 },
+        })
+      setBgProgress("")
+    }
+
     for (let i = 0; i < timestamps.length; i++) {
       try {
-        const dataUrl = await captureFrame(video, canvas, timestamps[i], format, quality, sizeOpt)
+        let dataUrl = await captureFrame(video, canvas, timestamps[i], format, quality, sizeOpt)
+
+        if (bgRemover) {
+          setBgProgress(`Removing bg ${i + 1}/${timestamps.length}…`)
+          const res = await fetch(dataUrl)
+          const blob = await res.blob()
+          const resultBlob = await bgRemover(blob)
+          dataUrl = await new Promise<string>((resolve) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.readAsDataURL(resultBlob)
+          })
+        }
+
         extracted.push({ index: i + 1, timeS: timestamps[i], dataUrl })
         if (!skipPreview) setFrames([...extracted])
         setProgress(Math.round(((i + 1) / timestamps.length) * 100))
@@ -141,10 +167,10 @@ export default function VideoPage() {
       }
     }
 
+    setBgProgress("")
     setFrames(extracted)
 
     if (skipPreview && extracted.length > 0) {
-      // auto-download zip immediately
       await doZip(extracted)
     }
 
@@ -395,6 +421,20 @@ export default function VideoPage() {
                 </div>
               )}
 
+              {/* Remove background */}
+              <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
+                <input
+                  type="checkbox"
+                  checked={removeBg}
+                  onChange={(e) => setRemoveBg(e.target.checked)}
+                  className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100"
+                />
+                <div>
+                  <span className="text-sm text-neutral-700 dark:text-neutral-300">Remove background</span>
+                  <p className="text-xs text-neutral-400">AI model runs in browser · PNG gives transparency</p>
+                </div>
+              </label>
+
               {/* Skip preview */}
               <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
                 <input
@@ -424,9 +464,15 @@ export default function VideoPage() {
                 <>
                   <Image className="h-4 w-4" />
                   Extract {estimatedFrames > 0 ? `~${estimatedFrames} ` : ""}frames as {format.toUpperCase()}
+                  {removeBg && " + remove bg"}
                 </>
               )}
             </button>
+
+            {/* bg model status */}
+            {bgProgress && (
+              <p className="text-center text-xs text-neutral-400">{bgProgress}</p>
+            )}
 
             {/* Progress bar */}
             {status === "extracting" && (
