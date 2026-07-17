@@ -138,6 +138,7 @@ export default function VideoPage() {
       const { removeBackground } = await import("@imgly/background-removal")
       bgRemover = (blob: Blob) =>
         removeBackground(blob, {
+          device: "webgpu",
           output: { format: format === "webp" ? "image/webp" : "image/png", quality: quality / 100 },
         })
       setBgProgress("")
@@ -421,19 +422,21 @@ export default function VideoPage() {
                 </div>
               )}
 
-              {/* Remove background */}
-              <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
-                <input
-                  type="checkbox"
-                  checked={removeBg}
-                  onChange={(e) => setRemoveBg(e.target.checked)}
-                  className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100"
-                />
-                <div>
-                  <span className="text-sm text-neutral-700 dark:text-neutral-300">Remove background</span>
-                  <p className="text-xs text-neutral-400">AI model runs in browser · PNG gives transparency</p>
-                </div>
-              </label>
+              {/* Remove background — local only (WebGPU, not available on Vercel) */}
+              {process.env.NEXT_PUBLIC_ENABLE_VIDEO_BG === "true" && (
+                <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
+                  <input
+                    type="checkbox"
+                    checked={removeBg}
+                    onChange={(e) => setRemoveBg(e.target.checked)}
+                    className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100"
+                  />
+                  <div>
+                    <span className="text-sm text-neutral-700 dark:text-neutral-300">Remove background</span>
+                    <p className="text-xs text-neutral-400">GPU-accelerated · PNG gives transparency</p>
+                  </div>
+                </label>
+              )}
 
               {/* Skip preview */}
               <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
