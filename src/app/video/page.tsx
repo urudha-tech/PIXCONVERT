@@ -156,6 +156,7 @@ export default function VideoPage() {
       const { removeBackground } = await import("@imgly/background-removal")
       bgRemover = (blob: Blob) =>
         removeBackground(blob, {
+          device: "gpu",
           output: { format: format === "webp" ? "image/webp" : "image/png", quality: quality / 100 },
         })
       setBgProgress("")

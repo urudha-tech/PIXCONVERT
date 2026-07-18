@@ -60,6 +60,7 @@ export default function RemoveBgPage() {
       setFiles((prev) => prev.map((f) => f.id === entry.id ? { ...f, status: "processing" } : f))
       try {
         const blob = await removeBackground(entry.file, {
+          device: "gpu",
           output: { format: format === "webp" ? "image/webp" : "image/png", quality: 0.92 },
         })
         const url = makeUrl(URL.createObjectURL(blob))
