@@ -435,7 +435,7 @@ export default function VideoPage() {
                   />
                   <div>
                     <span className="text-sm text-neutral-700 dark:text-neutral-300">Remove background</span>
-                    <p className="text-xs text-neutral-400">GPU-accelerated · PNG gives transparency</p>
+                    <p className="text-xs text-neutral-400">AI model runs in browser · WebP and PNG both support transparency</p>
                   </div>
                 </label>
               )}

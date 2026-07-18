@@ -171,7 +171,7 @@ export default function RemoveBgPage() {
                   </button>
                 ))}
                 {format === "png" && (
-                  <span className="text-xs text-neutral-400">transparent background</span>
+                  <span className="text-xs text-neutral-400">both support transparency</span>
                 )}
               </div>
               <div className="flex gap-2">
