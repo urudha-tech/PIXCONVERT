@@ -18,17 +18,13 @@ const RESOLUTION_OPTIONS = [
   { label: "640×360", w: 640, h: 360 },
 ]
 
-function clamp(v: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, v))
-}
-
 function sleep(ms: number) {
   return new Promise<void>((r) => setTimeout(r, ms))
 }
 
 export default function ImagesToVideoPage() {
   const [images, setImages] = useState<ImageItem[]>([])
-  const [frameDuration, setFrameDuration] = useState(2) // seconds per image
+  const frameDuration = 1 // seconds per image (fixed)
   const [resolutionIdx, setResolutionIdx] = useState(0)
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle")
   const [progress, setProgress] = useState(0)
@@ -192,8 +188,6 @@ export default function ImagesToVideoPage() {
     }
   }
 
-  const estimatedDuration = images.length * frameDuration
-
   return (
     <main className="min-h-screen bg-white dark:bg-neutral-950">
       <Navbar />
@@ -240,37 +234,7 @@ export default function ImagesToVideoPage() {
         {images.length > 0 && (
           <div className="mt-4 space-y-4">
             {/* Settings */}
-            <div className="rounded-xl border border-neutral-100 dark:border-neutral-800 divide-y divide-neutral-100 dark:divide-neutral-800">
-              {/* Frame duration */}
-              <div className="px-4 py-3 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-neutral-700 dark:text-neutral-300">
-                    Duration per image
-                    {estimatedDuration > 0 && (
-                      <span className="ml-2 text-xs text-neutral-400">~{estimatedDuration}s total</span>
-                    )}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <input
-                      type="number"
-                      min={0.5}
-                      max={30}
-                      step={0.5}
-                      value={frameDuration}
-                      onChange={(e) => setFrameDuration(clamp(parseFloat(e.target.value) || 1, 0.5, 30))}
-                      className="w-16 rounded-md border border-neutral-200 bg-neutral-50 px-2 py-1.5 text-right text-sm tabular-nums focus:outline-none dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
-                    />
-                    <span className="text-xs text-neutral-400">sec</span>
-                  </div>
-                </div>
-                <input
-                  type="range" min={0.5} max={10} step={0.5} value={frameDuration}
-                  onChange={(e) => setFrameDuration(Number(e.target.value))}
-                  className="w-full accent-neutral-900 dark:accent-neutral-100"
-                />
-              </div>
-
-              {/* Resolution */}
+            <div className="rounded-xl border border-neutral-100 dark:border-neutral-800">
               <div className="px-4 py-3 flex items-center justify-between gap-4">
                 <span className="text-sm text-neutral-700 dark:text-neutral-300">Resolution</span>
                 <select
@@ -285,11 +249,47 @@ export default function ImagesToVideoPage() {
               </div>
             </div>
 
+            {/* Generate button */}
+            <button
+              onClick={generate}
+              disabled={status === "loading" || images.length === 0}
+              className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200 disabled:opacity-60 flex items-center justify-center gap-2"
+            >
+              {status === "loading" ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Generating… {progress}%
+                </>
+              ) : (
+                <>
+                  <Film className="h-4 w-4" />
+                  Generate video ({images.length} frame{images.length !== 1 ? "s" : ""})
+                </>
+              )}
+            </button>
+
+            {status === "loading" && (
+              <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
+                <div className="h-full rounded-full bg-neutral-900 dark:bg-neutral-100 transition-all duration-300" style={{ width: `${progress}%` }} />
+              </div>
+            )}
+
+            {status === "done" && (
+              <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-emerald-400 flex items-center gap-2">
+                <Download className="h-4 w-4 shrink-0" />
+                Video downloaded — open in any browser or media player.
+              </div>
+            )}
+
+            {status === "error" && (
+              <p className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/20 dark:text-red-400">{error}</p>
+            )}
+
             {/* Image list */}
             <div className="rounded-xl border border-neutral-100 dark:border-neutral-800 overflow-hidden">
               <div className="flex items-center justify-between px-4 py-2.5 border-b border-neutral-100 dark:border-neutral-800">
                 <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
-                  {images.length} image{images.length !== 1 ? "s" : ""} · drag to reorder
+                  {images.length} image{images.length !== 1 ? "s" : ""}
                 </span>
                 <button onClick={reset} className="text-xs text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200">
                   Clear all
@@ -315,42 +315,6 @@ export default function ImagesToVideoPage() {
                 ))}
               </ul>
             </div>
-
-            {/* Generate button */}
-            <button
-              onClick={generate}
-              disabled={status === "loading" || images.length === 0}
-              className="w-full rounded-xl bg-neutral-900 py-3 text-sm font-medium text-white transition-colors hover:bg-neutral-800 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-200 disabled:opacity-60 flex items-center justify-center gap-2"
-            >
-              {status === "loading" ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating… {progress}%
-                </>
-              ) : (
-                <>
-                  <Film className="h-4 w-4" />
-                  Generate video ({images.length} frame{images.length !== 1 ? "s" : ""} · ~{estimatedDuration}s)
-                </>
-              )}
-            </button>
-
-            {status === "loading" && (
-              <div className="h-1.5 w-full overflow-hidden rounded-full bg-neutral-100 dark:bg-neutral-800">
-                <div className="h-full rounded-full bg-neutral-900 dark:bg-neutral-100 transition-all duration-300" style={{ width: `${progress}%` }} />
-              </div>
-            )}
-
-            {status === "done" && (
-              <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-emerald-400 flex items-center gap-2">
-                <Download className="h-4 w-4 shrink-0" />
-                Video downloaded — open in any browser or media player.
-              </div>
-            )}
-
-            {status === "error" && (
-              <p className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/20 dark:text-red-400">{error}</p>
-            )}
 
             <p className="text-center text-xs text-neutral-400">
               Output is WebM — supported by all modern browsers. Generation happens in real-time (1× speed).
