@@ -125,15 +125,15 @@ export default function ExifPage() {
           <UploadDropzone onFiles={handleFiles} multiple={false} />
         ) : (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-neutral-100 dark:border-neutral-800 p-4 bg-neutral-50/50 dark:bg-neutral-900/50">
-              <div className="flex items-center gap-4">
+            <div className="flex flex-col gap-3 rounded-xl border border-neutral-100 dark:border-neutral-800 p-4 bg-neutral-50/50 dark:bg-neutral-900/50 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
                 <img
                   src={previewUrl}
                   alt={file.name}
-                  className="h-16 w-16 rounded-lg object-cover border border-neutral-200 dark:border-neutral-700"
+                  className="h-14 w-14 rounded-lg object-cover border border-neutral-200 dark:border-neutral-700 shrink-0"
                 />
-                <div>
-                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate max-w-xs sm:max-w-md">
+                <div className="min-w-0">
+                  <h3 className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">
                     {file.name}
                   </h3>
                   <p className="text-xs text-neutral-400 mt-0.5">
@@ -142,7 +142,7 @@ export default function ExifPage() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={sanitizeAndDownload}
                   disabled={sanitizing}
