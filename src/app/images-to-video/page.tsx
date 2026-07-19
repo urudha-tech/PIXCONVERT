@@ -37,14 +37,52 @@ export default function ImagesToVideoPage() {
   const dragOverRef = useRef(false)
   const [isDragging, setIsDragging] = useState(false)
 
-  const addFiles = useCallback((files: File[]) => {
-    const imgs = files.filter((f) => f.type.startsWith("image/"))
-    const entries: ImageItem[] = imgs.map((f) => ({
+  const addImageFiles = (files: File[]) => {
+    const entries: ImageItem[] = files.map((f) => ({
       id: `${f.name}-${f.size}-${f.lastModified}-${Math.random()}`,
       file: f,
       previewUrl: URL.createObjectURL(f),
     }))
     setImages((prev) => [...prev, ...entries])
+  }
+
+  const addFiles = useCallback(async (files: File[]) => {
+    const imgs: File[] = []
+    const zips: File[] = []
+    for (const f of files) {
+      if (f.type.startsWith("image/") || /\.(jpe?g|png|webp|gif|bmp|tiff?|avif)$/i.test(f.name)) {
+        imgs.push(f)
+      } else if (f.type === "application/zip" || f.name.endsWith(".zip")) {
+        zips.push(f)
+      }
+    }
+
+    if (imgs.length) addImageFiles(imgs)
+
+    for (const zip of zips) {
+      try {
+        const JSZip = (await import("jszip")).default
+        const loaded = await JSZip.loadAsync(await zip.arrayBuffer())
+        const imageEntries: File[] = []
+        const sortedNames = Object.keys(loaded.files).sort()
+        for (const name of sortedNames) {
+          const entry = loaded.files[name]
+          if (entry.dir) continue
+          if (!/\.(jpe?g|png|webp|gif|bmp|tiff?|avif)$/i.test(name)) continue
+          const blob = await entry.async("blob")
+          const ext = name.split(".").pop()!.toLowerCase()
+          const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg"
+            : ext === "png" ? "image/png"
+            : ext === "webp" ? "image/webp"
+            : ext === "gif" ? "image/gif"
+            : "image/png"
+          imageEntries.push(new File([blob], name.split("/").pop()!, { type: mime }))
+        }
+        addImageFiles(imageEntries)
+      } catch {
+        // skip bad zip
+      }
+    }
   }, [])
 
   const remove = (id: string) => {
@@ -187,12 +225,12 @@ export default function ImagesToVideoPage() {
           </div>
           <div>
             <p className="text-sm font-medium text-neutral-900 dark:text-neutral-100">Drop images here, or click to browse</p>
-            <p className="mt-1 text-xs text-neutral-500">JPG, PNG, WebP · order them below before generating</p>
+            <p className="mt-1 text-xs text-neutral-500">JPG, PNG, WebP · or drop a ZIP of images · order them below before generating</p>
           </div>
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,.zip"
             multiple
             className="sr-only"
             onChange={(e) => { addFiles(Array.from(e.target.files ?? [])); e.target.value = "" }}
