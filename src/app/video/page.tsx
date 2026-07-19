@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Film, Download, X, Loader2, ArrowLeft, Image, Crosshair } from "lucide-react"
 import Link from "next/link"
 import JSZip from "jszip"
@@ -212,6 +212,22 @@ export default function VideoPage() {
   const [skipPreview, setSkipPreview] = useState(false)
   const [removeBg, setRemoveBg] = useState(false)
   const [bgProgress, setBgProgress] = useState("")
+  const [gpuAvailable, setGpuAvailable] = useState(false)
+
+  useEffect(() => {
+    try {
+      const canvas = document.createElement("canvas")
+      const gl = canvas.getContext("webgl") ?? canvas.getContext("experimental-webgl")
+      if (!gl) return
+      const ext = (gl as WebGLRenderingContext).getExtension("WEBGL_debug_renderer_info")
+      if (!ext) { setGpuAvailable(true); return }
+      const renderer = (gl as WebGLRenderingContext).getParameter(ext.UNMASKED_RENDERER_WEBGL) as string
+      const soft = ["swiftshader", "softpipe", "llvmpipe", "software", "microsoft basic"]
+      setGpuAvailable(!soft.some((s) => renderer.toLowerCase().includes(s)))
+    } catch {
+      setGpuAvailable(false)
+    }
+  }, [])
 
   // Watermark state — rect + preview dimensions persist across extractions
   const [removeWatermark, setRemoveWatermark] = useState(false)
@@ -567,8 +583,8 @@ export default function VideoPage() {
                 </div>
               )}
 
-              {/* Remove background — local only */}
-              {process.env.NEXT_PUBLIC_ENABLE_VIDEO_BG === "true" && (
+              {/* Remove background — shown when hardware GPU is detected */}
+              {gpuAvailable && (
                 <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
                   <input type="checkbox" checked={removeBg} onChange={(e) => setRemoveBg(e.target.checked)} className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100" />
                   <div>
