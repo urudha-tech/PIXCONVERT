@@ -3,9 +3,10 @@
 import { useReducer, useCallback, useRef } from "react"
 import { jobQueueReducer, initialQueueState } from "@/lib/queue/jobQueue"
 import { createJobs, type JobWithFile } from "@/lib/pipeline/jobFactory"
+import { convertFileToWebP, arrayBufferToBase64 } from "@/lib/conversion/clientConverter"
+import { toWebPName } from "@/lib/utils/fileUtils"
 import type { IngestedFile } from "@/types/upload"
 import type { ConversionOptions, ConversionResult } from "@/types/conversion"
-import type { ConvertResponse } from "@/types/api"
 
 const MAX_CONCURRENT = 4
 const WAVE_SIZE = 20
@@ -54,42 +55,26 @@ export function useConversionQueue() {
     dispatch({ type: "START_JOB", id: job.id })
 
     try {
-      const formData = new FormData()
-      formData.append("file", ingestedFile.file)
-      formData.append("options", JSON.stringify(options))
-
-      const res = await fetch("/api/convert", { method: "POST", body: formData })
-      if (res.status === 413) {
-        dispatch({ type: "FAIL_JOB", id: job.id, error: { code: "TOO_LARGE", message: "File too large (max 4 MB)." } })
-        return
+      const { buffer, targetMissed } = await convertFileToWebP(ingestedFile.file, options)
+      const result: ConversionResult = {
+        jobId: job.id,
+        outputName: toWebPName(ingestedFile.file.name),
+        relativePath: ingestedFile.relativePath,
+        webpBase64: arrayBufferToBase64(buffer),
+        originalSize: ingestedFile.file.size,
+        outputSize: buffer.byteLength,
+        targetMissed,
       }
-      const data: ConvertResponse = await res.json()
-
-      if (data.ok) {
-        const result: ConversionResult = {
-          jobId: job.id,
-          outputName: data.outputName,
-          relativePath: ingestedFile.relativePath,
-          webpBase64: data.webpBase64,
-          originalSize: data.originalSize,
-          outputSize: data.outputSize,
-          targetMissed: data.targetMissed,
-        }
-        // Store original object URL for comparison view
-        originalUrlsRef.current.set(job.id, URL.createObjectURL(ingestedFile.file))
-        dispatch({ type: "COMPLETE_JOB", id: job.id, result })
-      } else {
-        dispatch({
-          type: "FAIL_JOB",
-          id: job.id,
-          error: { code: data.errorCode, message: data.message },
-        })
-      }
-    } catch {
+      originalUrlsRef.current.set(job.id, URL.createObjectURL(ingestedFile.file))
+      dispatch({ type: "COMPLETE_JOB", id: job.id, result })
+    } catch (err) {
       dispatch({
         type: "FAIL_JOB",
         id: job.id,
-        error: { code: "CONVERSION_FAILED", message: "Network error during conversion." },
+        error: {
+          code: "CONVERSION_FAILED",
+          message: err instanceof Error ? err.message : "Conversion failed.",
+        },
       })
     }
   }
