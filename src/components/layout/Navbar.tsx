@@ -14,6 +14,7 @@ const links = [
   { href: "/exif", label: "EXIF Viewer", short: "EXIF" },
   { href: "/palette", label: "Color Palette", short: "Palette" },
   { href: "/watermark", label: "Watermark", short: "Mark" },
+  { href: "/image-editor", label: "Image Editor", short: "Edit" },
 ]
 
 export function Navbar() {
