@@ -4,7 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import {
   RotateCw, RotateCcw, FlipHorizontal, FlipVertical, Crop,
   Download, X, Check, RefreshCcw, Sun, Contrast, Droplets,
-  Sliders, ImageIcon,
+  Sliders, ImageIcon, Wand2, Focus, Wind,
 } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
 
@@ -18,6 +18,8 @@ export default function ImageEditorPage() {
   const [brightness, setBrightness] = useState(100)
   const [contrast, setContrast] = useState(100)
   const [saturation, setSaturation] = useState(100)
+  const [sharpen, setSharpen] = useState(0)
+  const [denoise, setDenoise] = useState(0)
   const [rotation, setRotation] = useState(0)
   const [flipH, setFlipH] = useState(false)
   const [flipV, setFlipV] = useState(false)
@@ -30,6 +32,34 @@ export default function ImageEditorPage() {
   const imgRef = useRef<HTMLImageElement | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const displayRef = useRef({ scale: 1, w: 0, h: 0 })
+
+  // Unsharp-mask convolution applied after drawing
+  const applySharpenKernel = (ctx: CanvasRenderingContext2D, w: number, h: number, amount: number) => {
+    if (amount === 0) return
+    const f = (amount / 100) * 1.5
+    const kernel = [0, -f, 0, -f, 1 + 4 * f, -f, 0, -f, 0]
+    const src = ctx.getImageData(0, 0, w, h)
+    const dst = ctx.createImageData(w, h)
+    const s = src.data, d = dst.data
+    for (let y = 0; y < h; y++) {
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4
+        for (let c = 0; c < 3; c++) {
+          let v = 0
+          for (let ky = -1; ky <= 1; ky++) {
+            for (let kx = -1; kx <= 1; kx++) {
+              const nx = Math.min(w - 1, Math.max(0, x + kx))
+              const ny = Math.min(h - 1, Math.max(0, y + ky))
+              v += s[(ny * w + nx) * 4 + c] * kernel[(ky + 1) * 3 + (kx + 1)]
+            }
+          }
+          d[i + c] = Math.max(0, Math.min(255, v))
+        }
+        d[i + 3] = s[i + 3]
+      }
+    }
+    ctx.putImageData(dst, 0, 0)
+  }
 
   const redraw = useCallback((img?: HTMLImageElement) => {
     const canvas = canvasRef.current
@@ -54,7 +84,8 @@ export default function ImageEditorPage() {
     const ctx = canvas.getContext("2d")!
     ctx.clearRect(0, 0, dispW, dispH)
     ctx.save()
-    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`
+    const blurPx = denoise > 0 ? ` blur(${((denoise / 100) * 2).toFixed(1)}px)` : ""
+    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)${blurPx}`
     ctx.translate(dispW / 2, dispH / 2)
     ctx.rotate((rotation * Math.PI) / 180)
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1)
@@ -66,7 +97,8 @@ export default function ImageEditorPage() {
       i.naturalHeight * scale,
     )
     ctx.restore()
-  }, [brightness, contrast, saturation, rotation, flipH, flipV])
+    applySharpenKernel(ctx, dispW, dispH, sharpen)
+  }, [brightness, contrast, saturation, sharpen, denoise, rotation, flipH, flipV, applySharpenKernel])
 
   useEffect(() => { redraw() }, [redraw])
 
@@ -91,8 +123,17 @@ export default function ImageEditorPage() {
 
   const resetAdjustments = () => {
     setBrightness(100); setContrast(100); setSaturation(100)
+    setSharpen(0); setDenoise(0)
     setRotation(0); setFlipH(false); setFlipV(false)
     setCropRect(null)
+  }
+
+  const autoEnhance = () => {
+    setBrightness(105)
+    setContrast(115)
+    setSaturation(115)
+    setSharpen(35)
+    setDenoise(0)
   }
 
   const rotate = (dir: 1 | -1) => setRotation((r) => (r + dir * 90 + 360) % 360)
@@ -124,11 +165,13 @@ export default function ImageEditorPage() {
     const c = document.createElement("canvas")
     c.width = effW; c.height = effH
     const ctx = c.getContext("2d")!
-    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)`
+    const blurPx = denoise > 0 ? ` blur(${((denoise / 100) * 2).toFixed(1)}px)` : ""
+    ctx.filter = `brightness(${brightness}%) contrast(${contrast}%) saturate(${saturation}%)${blurPx}`
     ctx.translate(effW / 2, effH / 2)
     ctx.rotate((rotation * Math.PI) / 180)
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1)
     ctx.drawImage(img, -img.naturalWidth / 2, -img.naturalHeight / 2)
+    applySharpenKernel(ctx, effW, effH, sharpen)
     return c
   }
 
@@ -195,12 +238,17 @@ export default function ImageEditorPage() {
   const onCropMouseUp = () => setCropDragStart(null)
 
   const hasImage = !!imgRef.current
-  const isModified = brightness !== 100 || contrast !== 100 || saturation !== 100 || rotation !== 0 || flipH || flipV
+  const isModified = brightness !== 100 || contrast !== 100 || saturation !== 100 || sharpen !== 0 || denoise !== 0 || rotation !== 0 || flipH || flipV
 
   const ADJUSTMENTS = [
-    { label: "Brightness", Icon: Sun, value: brightness, set: setBrightness },
-    { label: "Contrast", Icon: Contrast, value: contrast, set: setContrast },
-    { label: "Saturation", Icon: Droplets, value: saturation, set: setSaturation },
+    { label: "Brightness", Icon: Sun, value: brightness, set: setBrightness, min: 0, max: 200, def: 100, unit: "%" },
+    { label: "Contrast",   Icon: Contrast, value: contrast, set: setContrast, min: 0, max: 200, def: 100, unit: "%" },
+    { label: "Saturation", Icon: Droplets, value: saturation, set: setSaturation, min: 0, max: 200, def: 100, unit: "%" },
+  ]
+
+  const ENHANCE = [
+    { label: "Sharpen", Icon: Focus, value: sharpen, set: setSharpen, min: 0, max: 100, def: 0, unit: "" },
+    { label: "Denoise", Icon: Wind,  value: denoise, set: setDenoise, min: 0, max: 100, def: 0, unit: "" },
   ]
 
   return (
@@ -394,36 +442,73 @@ export default function ImageEditorPage() {
               </div>
             )}
 
-            {/* Adjustment sliders */}
+            {/* Adjustment + Enhance sliders */}
             {mode === "adjust" && (
-              <div className="divide-y divide-neutral-100 rounded-xl border border-neutral-100 dark:divide-neutral-800 dark:border-neutral-800">
-                {ADJUSTMENTS.map(({ label, Icon, value, set }) => (
-                  <div key={label} className="px-4 py-3">
-                    <div className="mb-2 flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <Icon className="h-3.5 w-3.5 text-neutral-400" />
-                        <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">{label}</span>
+              <div className="space-y-3">
+                {/* Basic adjustments */}
+                <div className="divide-y divide-neutral-100 rounded-xl border border-neutral-100 dark:divide-neutral-800 dark:border-neutral-800">
+                  {ADJUSTMENTS.map(({ label, Icon, value, set, min, max, def, unit }) => (
+                    <div key={label} className="px-4 py-3">
+                      <div className="mb-2 flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <Icon className="h-3.5 w-3.5 text-neutral-400" />
+                          <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">{label}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="w-10 text-right text-xs tabular-nums text-neutral-400">{value}{unit}</span>
+                          {value !== def && (
+                            <button onClick={() => set(def)} className="text-[10px] text-neutral-400 underline hover:text-neutral-600 dark:hover:text-neutral-300">
+                              reset
+                            </button>
+                          )}
+                        </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <span className="w-8 text-right text-xs tabular-nums text-neutral-400">{value}%</span>
-                        {value !== 100 && (
-                          <button onClick={() => set(100)} className="text-[10px] text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300 underline">
-                            reset
-                          </button>
-                        )}
-                      </div>
+                      <input type="range" min={min} max={max} step={1} value={value}
+                        onChange={(e) => set(Number(e.target.value))}
+                        className="w-full accent-neutral-900 dark:accent-neutral-100" />
                     </div>
-                    <input
-                      type="range"
-                      min={0}
-                      max={200}
-                      step={1}
-                      value={value}
-                      onChange={(e) => set(Number(e.target.value))}
-                      className="w-full accent-neutral-900 dark:accent-neutral-100"
-                    />
+                  ))}
+                </div>
+
+                {/* Enhance */}
+                <div className="rounded-xl border border-neutral-100 dark:border-neutral-800 overflow-hidden">
+                  <div className="flex items-center justify-between border-b border-neutral-100 dark:border-neutral-800 px-4 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <Wand2 className="h-3.5 w-3.5 text-neutral-400" />
+                      <span className="text-xs font-semibold text-neutral-700 dark:text-neutral-300">Enhance</span>
+                    </div>
+                    <button
+                      onClick={autoEnhance}
+                      className="flex items-center gap-1.5 rounded-md bg-neutral-900 px-2.5 py-1 text-[11px] font-medium text-white transition-colors hover:bg-neutral-700 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-neutral-300"
+                    >
+                      <Wand2 className="h-3 w-3" />
+                      Auto enhance
+                    </button>
                   </div>
-                ))}
+                  <div className="divide-y divide-neutral-100 dark:divide-neutral-800">
+                    {ENHANCE.map(({ label, Icon, value, set, min, max, def }) => (
+                      <div key={label} className="px-4 py-3">
+                        <div className="mb-2 flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Icon className="h-3.5 w-3.5 text-neutral-400" />
+                            <span className="text-xs font-medium text-neutral-700 dark:text-neutral-300">{label}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="w-6 text-right text-xs tabular-nums text-neutral-400">{value}</span>
+                            {value !== def && (
+                              <button onClick={() => set(def)} className="text-[10px] text-neutral-400 underline hover:text-neutral-600 dark:hover:text-neutral-300">
+                                reset
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <input type="range" min={min} max={max} step={1} value={value}
+                          onChange={(e) => set(Number(e.target.value))}
+                          className="w-full accent-neutral-900 dark:accent-neutral-100" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             )}
 
