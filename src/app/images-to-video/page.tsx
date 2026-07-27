@@ -1,8 +1,9 @@
 "use client"
 
-import { useState, useRef, useCallback } from "react"
+import { useState, useRef, useCallback, useEffect } from "react"
 import { Film, Download, X, Loader2, ArrowUpDown } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 interface ImageItem {
   id: string
@@ -79,6 +80,12 @@ export default function ImagesToVideoPage() {
         // skip bad zip
       }
     }
+  }, [])
+
+  const { pendingFiles, clearFiles } = usePendingFiles()
+  useEffect(() => {
+    if (pendingFiles.length > 0) { addFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const remove = (id: string) => {

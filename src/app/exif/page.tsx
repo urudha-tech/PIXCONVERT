@@ -1,6 +1,7 @@
 "use client"
 
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
+import { usePendingFiles } from "@/context/FilesContext"
 import { UploadDropzone } from "@/components/upload/UploadDropzone"
 import { formatBytes } from "@/lib/utils/fileUtils"
 import { ArrowLeft, ShieldCheck, Loader2, MapPin, Camera, Sliders, Calendar, Info } from "lucide-react"
@@ -33,6 +34,7 @@ export default function ExifPage() {
   const [loading, setLoading] = useState(false)
   const [sanitizing, setSanitizing] = useState(false)
   const [sanitized, setSanitized] = useState(false)
+  const { pendingFiles, clearFiles } = usePendingFiles()
 
   const handleFiles = useCallback(async (incoming: File[]) => {
     if (incoming.length === 0) return
@@ -51,6 +53,11 @@ export default function ExifPage() {
     } finally {
       setLoading(false)
     }
+  }, [])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { handleFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const reset = () => {

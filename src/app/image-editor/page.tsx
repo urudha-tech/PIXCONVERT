@@ -7,6 +7,7 @@ import {
   Sliders, ImageIcon, Wand2, Focus, Wind,
 } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 interface Rect { x: number; y: number; w: number; h: number }
 
@@ -108,6 +109,8 @@ export default function ImageEditorPage() {
     img.src = url
   }, [redraw])
 
+  const { pendingFiles, clearFiles } = usePendingFiles()
+
   const handleFiles = useCallback((files: File[]) => {
     const img = files.find((f) => f.type.startsWith("image/"))
     if (!img) return
@@ -120,6 +123,11 @@ export default function ImageEditorPage() {
     setRotation(0); setFlipH(false); setFlipV(false)
     setBrightness(100); setContrast(100); setSaturation(100)
   }, [loadFromUrl])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { handleFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const resetAdjustments = () => {
     setBrightness(100); setContrast(100); setSaturation(100)

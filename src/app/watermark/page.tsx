@@ -7,6 +7,7 @@ import { ArrowLeft, Stamp, Download, Loader2, X, Image as ImageIcon, Type, Grid 
 import Link from "next/link"
 import JSZip from "jszip"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 type Position = "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right" | "tile"
 
@@ -37,6 +38,8 @@ export default function WatermarkPage() {
   const [processing, setProcessing] = useState(false)
   const previewCanvasRef = useRef<HTMLCanvasElement | null>(null)
 
+  const { pendingFiles, clearFiles } = usePendingFiles()
+
   const handleFiles = useCallback((incoming: File[]) => {
     const supported = incoming.filter((f) =>
       /\.(jpe?g|png|gif|webp|bmp|tiff?|heic|avif|svg)$/i.test(f.name)
@@ -47,6 +50,11 @@ export default function WatermarkPage() {
       previewUrl: URL.createObjectURL(f),
     }))
     setFiles((prev) => [...prev, ...newFiles])
+  }, [])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { handleFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {

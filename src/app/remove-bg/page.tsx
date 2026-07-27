@@ -1,10 +1,11 @@
 "use client"
 
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { ArrowLeft, Download, X, Loader2, Eraser } from "lucide-react"
 import Link from "next/link"
 import { formatBytes } from "@/lib/utils/fileUtils"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 interface BgFile {
   id: string
@@ -24,6 +25,7 @@ export default function RemoveBgPage() {
   const [isDragging, setIsDragging] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const objectUrlsRef = useRef<Set<string>>(new Set())
+  const { pendingFiles, clearFiles } = usePendingFiles()
 
   const makeUrl = (url: string) => { objectUrlsRef.current.add(url); return url }
 
@@ -39,6 +41,11 @@ export default function RemoveBgPage() {
       const ids = new Set(prev.map((p) => p.id))
       return [...prev, ...entries.filter((e) => !ids.has(e.id))]
     })
+  }, [])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { addFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const remove = (id: string) => {

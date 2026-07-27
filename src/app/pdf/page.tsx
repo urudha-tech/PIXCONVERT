@@ -1,11 +1,12 @@
 "use client"
 
-import { useState, useCallback, useRef } from "react"
+import { useState, useCallback, useRef, useEffect } from "react"
 import { UploadDropzone } from "@/components/upload/UploadDropzone"
 import { formatBytes } from "@/lib/utils/fileUtils"
 import { FileText, X, Download, Loader2, ArrowLeft, ChevronUp, ChevronDown } from "lucide-react"
 import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 interface PDFFile {
   id: string
@@ -21,6 +22,7 @@ export default function PDFPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle")
   const [error, setError] = useState("")
   const previewUrlsRef = useRef<Map<string, string>>(new Map())
+  const { pendingFiles, clearFiles } = usePendingFiles()
 
   const handleFiles = useCallback((incoming: File[]) => {
     const supported = incoming.filter((f) =>
@@ -37,6 +39,11 @@ export default function PDFPage() {
       const existingIds = new Set(prev.map((f) => f.id))
       return [...prev, ...newEntries.filter((e) => !existingIds.has(e.id))]
     })
+  }, [])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { handleFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const remove = (id: string) => {

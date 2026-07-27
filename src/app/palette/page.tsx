@@ -6,6 +6,7 @@ import { formatBytes } from "@/lib/utils/fileUtils"
 import { ArrowLeft, Pipette, Palette, Copy, Check, Download } from "lucide-react"
 import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
+import { usePendingFiles } from "@/context/FilesContext"
 
 interface ColorSwatch {
   hex: string
@@ -103,6 +104,7 @@ export default function PalettePage() {
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
   const [loupe, setLoupe] = useState<{ x: number; y: number; visible: boolean }>({ x: 0, y: 0, visible: false })
+  const { pendingFiles, clearFiles } = usePendingFiles()
 
   const handleFiles = useCallback((incoming: File[]) => {
     if (incoming.length === 0) return
@@ -110,6 +112,11 @@ export default function PalettePage() {
     setFile(selected)
     setPreviewUrl(URL.createObjectURL(selected))
     setPickedColor(null)
+  }, [])
+
+  useEffect(() => {
+    if (pendingFiles.length > 0) { handleFiles(pendingFiles); clearFiles() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {
