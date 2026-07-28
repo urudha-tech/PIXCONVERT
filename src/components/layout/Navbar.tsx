@@ -23,13 +23,13 @@ export function Navbar() {
 
   return (
     <nav className="sticky top-0 z-30 border-b border-neutral-100 bg-white/90 backdrop-blur-md dark:border-neutral-900 dark:bg-neutral-950/90">
-      <div className="flex items-center w-full px-16 py-2 gap-16">
+      <div className="flex items-center w-full px-4 sm:px-16 py-2 gap-4 sm:gap-16">
 
         {/* Brand — pinned left */}
         <Link
           href="/"
-          className="flex items-center gap-2.5 shrink-0 text-neutral-900 dark:text-neutral-100 tracking-wide border-2 border-neutral-200 dark:border-neutral-700 rounded-full pl-1 pr-3 py-0.5"
-          style={{ fontFamily: "'Abolition', sans-serif", fontSize: "2rem" }}
+          className="flex items-center gap-2.5 shrink-0 text-[1.5rem] sm:text-[2rem] text-neutral-900 dark:text-neutral-100 tracking-wide border-2 border-neutral-200 dark:border-neutral-700 rounded-full pl-1 pr-3 py-0.5"
+          style={{ fontFamily: "'Abolition', sans-serif" }}
         >
           <div className="h-9 w-9 rounded-full overflow-hidden shrink-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}

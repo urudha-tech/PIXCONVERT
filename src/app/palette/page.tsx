@@ -207,15 +207,15 @@ export default function PalettePage() {
           <UploadDropzone onFiles={handleFiles} multiple={false} />
         ) : (
           <div className="space-y-6">
-            <div className="flex items-center justify-between rounded-xl border border-neutral-100 dark:border-neutral-800 p-4 bg-neutral-50/50 dark:bg-neutral-900/50">
-              <div className="flex items-center gap-3">
-                <Pipette className="h-4 w-4 text-neutral-500" />
-                <span className="text-sm font-medium text-neutral-900 dark:text-neutral-100">
+            <div className="flex items-center justify-between rounded-xl border border-neutral-100 dark:border-neutral-800 p-4 bg-neutral-50/50 dark:bg-neutral-900/50 gap-3">
+              <div className="flex min-w-0 items-center gap-3">
+                <Pipette className="h-4 w-4 shrink-0 text-neutral-500" />
+                <span className="truncate text-sm font-medium text-neutral-900 dark:text-neutral-100">
                   {file.name} ({formatBytes(file.size)})
                 </span>
               </div>
 
-              <div className="flex gap-2">
+              <div className="flex shrink-0 gap-2">
                 <button
                   onClick={exportCss}
                   className="rounded-lg border border-neutral-200 dark:border-neutral-800 px-3 py-1.5 text-xs font-medium text-neutral-700 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors flex items-center gap-1.5"
