@@ -25,8 +25,8 @@ export function Navbar() {
     <nav className="sticky top-0 z-30 border-b border-neutral-100 bg-white/80 backdrop-blur-md dark:border-neutral-900 dark:bg-neutral-950/80">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         {/* Brand */}
-        <Link href="/" className="text-sm font-semibold text-neutral-900 dark:text-neutral-100 shrink-0">
-          ImageTools
+        <Link href="/" className="shrink-0 text-neutral-900 dark:text-neutral-100 tracking-wide" style={{ fontFamily: "'Abolition', sans-serif", fontSize: "1.35rem" }}>
+          SQUISH
         </Link>
 
         {/* Desktop links */}
