@@ -116,12 +116,11 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const elapsed =
     state.startedAt && state.completedAt ? state.completedAt - state.startedAt : null
 
-  // No files yet — full dropzone + settings
+  // No files yet — dropzone only
   if (total === 0 && staged.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl space-y-4 py-4 pb-16 sm:py-6">
+      <div className="mx-auto max-w-2xl py-4 pb-16 sm:py-6">
         <UploadDropzone onFiles={handleFiles} multiple allowFolder />
-        <ConversionSettings options={options} onChange={setOptions} />
       </div>
     )
   }

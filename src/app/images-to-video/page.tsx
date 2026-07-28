@@ -4,6 +4,7 @@ import { useState, useRef, useCallback, useEffect } from "react"
 import { Film, Download, X, Loader2, ArrowUpDown } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 interface ImageItem {
   id: string
@@ -196,8 +197,9 @@ export default function ImagesToVideoPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">Images to Video</h1>
@@ -341,6 +343,7 @@ export default function ImagesToVideoPage() {
           </div>
         )}
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

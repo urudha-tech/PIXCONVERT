@@ -5,6 +5,7 @@ import { Film, Download, X, Loader2, ArrowLeft, Image, Crosshair } from "lucide-
 import Link from "next/link"
 import JSZip from "jszip"
 import { Navbar } from "@/components/layout/Navbar"
+import { PageCard } from "@/components/layout/PageCard"
 
 type OutputFormat = "webp" | "png"
 
@@ -421,8 +422,9 @@ export default function VideoPage() {
   const isBusy = status === "extracting"
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <canvas ref={canvasRef} className="sr-only" aria-hidden />
 
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
@@ -763,6 +765,7 @@ export default function VideoPage() {
           </div>
         </div>
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

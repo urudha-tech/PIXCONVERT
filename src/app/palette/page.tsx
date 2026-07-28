@@ -7,6 +7,7 @@ import { ArrowLeft, Pipette, Palette, Copy, Check, Download } from "lucide-react
 import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 interface ColorSwatch {
   hex: string
@@ -181,8 +182,9 @@ export default function PalettePage() {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/"
@@ -371,6 +373,7 @@ export default function PalettePage() {
           </div>
         </div>
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

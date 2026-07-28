@@ -6,6 +6,7 @@ import Link from "next/link"
 import { formatBytes } from "@/lib/utils/fileUtils"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 interface BgFile {
   id: string
@@ -106,8 +107,9 @@ export default function RemoveBgPage() {
   const pendingCount = files.filter((f) => f.status === "pending" || f.status === "error").length
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/"
@@ -322,6 +324,7 @@ export default function RemoveBgPage() {
           </div>
         </div>
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

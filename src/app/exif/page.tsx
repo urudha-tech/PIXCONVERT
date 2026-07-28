@@ -8,6 +8,7 @@ import { ArrowLeft, ShieldCheck, Loader2, MapPin, Camera, Sliders, Calendar, Inf
 import Link from "next/link"
 import exifr from "exifr"
 import { Navbar } from "@/components/layout/Navbar"
+import { PageCard } from "@/components/layout/PageCard"
 
 interface ExifData {
   make?: string
@@ -108,8 +109,9 @@ export default function ExifPage() {
   }
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <div className="mx-auto max-w-4xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/"
@@ -359,6 +361,7 @@ export default function ExifPage() {
           </div>
         </div>
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

@@ -22,29 +22,40 @@ export function Navbar() {
   const [open, setOpen] = useState(false)
 
   return (
-    <nav className="sticky top-0 z-30 border-b border-neutral-100 bg-white/80 backdrop-blur-md dark:border-neutral-900 dark:bg-neutral-950/80">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
-        {/* Brand */}
-        <Link href="/" className="shrink-0 text-neutral-900 dark:text-neutral-100 tracking-wide" style={{ fontFamily: "'Abolition', sans-serif", fontSize: "1.35rem" }}>
-          SQUISH
+    <nav className="sticky top-0 z-30 border-b border-neutral-100 bg-white/90 backdrop-blur-md dark:border-neutral-900 dark:bg-neutral-950/90">
+      <div className="flex items-center w-full px-16 py-2 gap-16">
+
+        {/* Brand — pinned left */}
+        <Link
+          href="/"
+          className="flex items-center gap-2.5 shrink-0 text-neutral-900 dark:text-neutral-100 tracking-wide border-2 border-neutral-200 dark:border-neutral-700 rounded-full pl-1 pr-3 py-0.5"
+          style={{ fontFamily: "'Abolition', sans-serif", fontSize: "2rem" }}
+        >
+          <div className="h-9 w-9 rounded-full overflow-hidden shrink-0">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/squish-logo-light.png" alt="Squish logo" className="h-full w-full object-cover dark:hidden" />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/squish-logo-dark.png" alt="Squish logo" className="h-full w-full object-cover hidden dark:block" />
+          </div>
+          <span style={{ transform: "translateY(-3px)", display: "inline-block" }}>SQUISH</span>
         </Link>
 
-        {/* Desktop links */}
-        <div className="hidden sm:flex items-center gap-0.5 flex-wrap justify-end">
+        {/* Desktop links — fill remaining space evenly */}
+        <div className="hidden sm:flex items-center gap-1 flex-1 min-w-0">
           {links.map(({ href, label, short }) => {
             const active = pathname === href
             return (
               <Link
                 key={href}
                 href={href}
-                className={`rounded-lg px-2 py-1.5 text-xs font-medium transition-colors ${
+                className={`rounded-lg px-2.5 py-1.5 text-sm font-medium transition-colors whitespace-nowrap ${
                   active
                     ? "bg-neutral-900 text-white dark:bg-neutral-100 dark:text-neutral-900"
                     : "text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-100"
                 }`}
               >
-                <span className="hidden lg:inline">{label}</span>
-                <span className="lg:hidden">{short}</span>
+                <span className="hidden xl:inline">{label}</span>
+                <span className="xl:hidden">{short}</span>
               </Link>
             )
           })}
@@ -53,7 +64,7 @@ export function Navbar() {
         {/* Mobile hamburger */}
         <button
           onClick={() => setOpen((o) => !o)}
-          className="sm:hidden rounded-lg p-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 transition-colors"
+          className="sm:hidden ml-auto rounded-lg p-1.5 text-neutral-600 hover:bg-neutral-100 dark:text-neutral-400 dark:hover:bg-neutral-800 transition-colors"
           aria-label="Toggle menu"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

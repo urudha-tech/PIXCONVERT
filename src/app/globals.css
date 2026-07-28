@@ -1,4 +1,11 @@
-@import url('https://fonts.cdnfonts.com/css/abolition');
+@font-face {
+  font-family: 'Abolition';
+  src: url('/fonts/AbolitionTest-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -8,7 +15,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-caudex);
   --font-mono: var(--font-geist-mono);
   --font-heading: var(--font-sans);
   --color-sidebar-ring: var(--sidebar-ring);
@@ -118,12 +125,23 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@keyframes chevron-right {
+  from { background-position: 0 0; }
+  to   { background-position: 120px 0; }
+}
+@keyframes chevron-left {
+  from { background-position: 0 0; }
+  to   { background-position: -120px 0; }
+}
+.ribbon-scroll-right { animation: chevron-right 1.5s linear infinite; }
+.ribbon-scroll-left  { animation: chevron-left  1.5s linear infinite; }
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-white text-foreground dark:bg-neutral-950;
   }
   html {
     @apply font-sans;

@@ -8,6 +8,7 @@ import Link from "next/link"
 import JSZip from "jszip"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 type Position = "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right" | "tile"
 
@@ -251,8 +252,9 @@ export default function WatermarkPage() {
   ]
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 sm:py-10">
         <Link
           href="/"
@@ -505,6 +507,7 @@ export default function WatermarkPage() {
           </div>
         </div>
       </div>
-    </main>
+      </PageCard>
+    </>
   )
 }

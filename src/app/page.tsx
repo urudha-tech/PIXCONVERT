@@ -8,6 +8,7 @@ import {
 } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 const ACTIONS = [
   {
@@ -16,6 +17,7 @@ const ACTIONS = [
     description: "Bulk convert JPG, PNG, HEIC and more. Zip input supported.",
     icon: ImageIcon,
     multi: true,
+    acceptsZip: true,
   },
   {
     href: "/remove-bg",
@@ -23,6 +25,7 @@ const ACTIONS = [
     description: "AI-powered cutout. Works on portraits and objects.",
     icon: Eraser,
     multi: true,
+    acceptsZip: true,
   },
   {
     href: "/pdf",
@@ -30,6 +33,7 @@ const ACTIONS = [
     description: "Combine images into a single PDF. Custom page sizes.",
     icon: FileText,
     multi: true,
+    acceptsZip: true,
   },
   {
     href: "/image-editor",
@@ -37,6 +41,7 @@ const ACTIONS = [
     description: "Crop, rotate, adjust brightness, sharpen and more.",
     icon: Sliders,
     multi: false,
+    acceptsZip: false,
   },
   {
     href: "/watermark",
@@ -44,6 +49,7 @@ const ACTIONS = [
     description: "Overlay text or logo across a batch of photos.",
     icon: Stamp,
     multi: true,
+    acceptsZip: true,
   },
   {
     href: "/images-to-video",
@@ -51,6 +57,7 @@ const ACTIONS = [
     description: "Turn a sequence of images into a WebM video.",
     icon: Film,
     multi: true,
+    acceptsZip: true,
   },
   {
     href: "/palette",
@@ -58,6 +65,7 @@ const ACTIONS = [
     description: "Extract dominant colors and sample pixels.",
     icon: Palette,
     multi: false,
+    acceptsZip: false,
   },
   {
     href: "/exif",
@@ -65,6 +73,7 @@ const ACTIONS = [
     description: "Inspect metadata, GPS, camera settings. Strip for privacy.",
     icon: ShieldCheck,
     multi: false,
+    acceptsZip: false,
   },
 ]
 
@@ -84,7 +93,8 @@ export default function Home() {
     const images = incoming.filter(
       (f) =>
         f.type.startsWith("image/") ||
-        /\.(jpe?g|png|gif|webp|bmp|heic|heif|avif|svg)$/i.test(f.name),
+        f.type === "application/zip" ||
+        /\.(jpe?g|png|gif|webp|bmp|heic|heif|avif|svg|zip)$/i.test(f.name),
     )
     if (images.length === 0) return
     setDropped((prev) => {
@@ -109,10 +119,14 @@ export default function Home() {
 
   const clear = () => setDropped([])
   const totalSize = dropped.reduce((s, f) => s + f.size, 0)
+  const hasZip = dropped.some((f) => f.type === "application/zip" || /\.zip$/i.test(f.name))
+  const visibleActions = hasZip ? ACTIONS.filter((a) => a.acceptsZip) : ACTIONS
 
   return (
-    <main className="min-h-screen bg-white dark:bg-neutral-950">
+    <>
       <Navbar />
+      <PageCard>
+      <div>
 
       <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-16">
         {/* Headline */}
@@ -149,7 +163,7 @@ export default function Home() {
                   Drop images here, or click to browse
                 </p>
                 <p className="mt-1 text-xs text-neutral-400">
-                  JPG · PNG · HEIC · WebP · GIF · AVIF · SVG — any amount
+                  JPG · PNG · HEIC · WebP · GIF · AVIF · SVG · ZIP — any amount
                 </p>
               </div>
             </>
@@ -197,7 +211,7 @@ export default function Home() {
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/*,.heic,.heif"
+          accept="image/*,.heic,.heif,.zip"
           className="sr-only"
           onChange={(e) => { addFiles(Array.from(e.target.files ?? [])); e.target.value = "" }}
         />
@@ -209,7 +223,7 @@ export default function Home() {
               What do you want to do?
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
-              {ACTIONS.map(({ href, label, description, icon: Icon, multi }) => (
+              {visibleActions.map(({ href, label, description, icon: Icon, multi }) => (
                 <button
                   key={href}
                   onClick={() => pick(href)}
@@ -244,7 +258,7 @@ export default function Home() {
               Or go directly to a tool
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
-              {ACTIONS.map(({ href, label, description, icon: Icon }) => (
+              {visibleActions.map(({ href, label, description, icon: Icon }) => (
                 <a
                   key={href}
                   href={href}
@@ -264,9 +278,8 @@ export default function Home() {
         )}
       </div>
 
-      <footer className="border-t border-neutral-100 py-6 text-center text-xs text-neutral-400 dark:border-neutral-900">
-        Squish by Urudha · Fast, private, free
-      </footer>
-    </main>
+      </div>
+      </PageCard>
+    </>
   )
 }

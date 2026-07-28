@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { X } from "lucide-react"
 import { MainWorkspace } from "@/components/layout/MainWorkspace"
 import { usePendingFiles } from "@/context/FilesContext"
+import { PageCard } from "@/components/layout/PageCard"
 
 export default function EditorPage() {
   const router = useRouter()
@@ -27,7 +28,7 @@ export default function EditorPage() {
   if (pendingFiles.length === 0) return null
 
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-neutral-950">
+    <>
       {/* Top bar */}
       <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center justify-between border-b border-neutral-100 bg-white/90 px-4 backdrop-blur-sm dark:border-neutral-900 dark:bg-neutral-950/90 sm:px-6">
         <div className="flex items-center gap-3">
@@ -49,9 +50,11 @@ export default function EditorPage() {
       </header>
 
       {/* Workspace */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6">
-        <MainWorkspace initialFiles={pendingFiles} onClose={handleClose} />
-      </div>
-    </div>
+      <PageCard>
+        <div className="flex-1 overflow-y-auto px-4 sm:px-6">
+          <MainWorkspace initialFiles={pendingFiles} onClose={handleClose} />
+        </div>
+      </PageCard>
+    </>
   )
 }
