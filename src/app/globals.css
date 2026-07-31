@@ -126,15 +126,15 @@
 }
 
 @keyframes chevron-right {
-  from { background-position: 0 0; }
-  to   { background-position: 120px 0; }
+  from { transform: translateX(0); }
+  to   { transform: translateX(120px); }
 }
 @keyframes chevron-left {
-  from { background-position: 0 0; }
-  to   { background-position: -120px 0; }
+  from { transform: translateX(0); }
+  to   { transform: translateX(-120px); }
 }
-.ribbon-scroll-right { animation: chevron-right 1.5s linear infinite; }
-.ribbon-scroll-left  { animation: chevron-left  1.5s linear infinite; }
+.ribbon-scroll-right { animation: chevron-right 1.5s linear infinite; will-change: transform; }
+.ribbon-scroll-left  { animation: chevron-left  1.5s linear infinite; will-change: transform; }
 
 @layer base {
   * {
