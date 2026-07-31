@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { X } from "lucide-react"
 import { MainWorkspace } from "@/components/layout/MainWorkspace"
@@ -10,22 +9,11 @@ import { PageCard } from "@/components/layout/PageCard"
 export default function EditorPage() {
   const router = useRouter()
   const { pendingFiles, clearFiles } = usePendingFiles()
-  const hasRedirected = useRef(false)
-
-  // If someone navigates directly to /editor with no files, send them home
-  useEffect(() => {
-    if (pendingFiles.length === 0 && !hasRedirected.current) {
-      hasRedirected.current = true
-      router.replace("/")
-    }
-  }, [pendingFiles.length, router])
 
   const handleClose = () => {
     clearFiles()
     router.push("/")
   }
-
-  if (pendingFiles.length === 0) return null
 
   return (
     <>
@@ -51,7 +39,7 @@ export default function EditorPage() {
 
       {/* Workspace */}
       <PageCard>
-        <div className="flex-1 overflow-y-auto px-4 sm:px-6">
+        <div className="px-4 sm:px-6">
           <MainWorkspace initialFiles={pendingFiles} onClose={handleClose} />
         </div>
       </PageCard>

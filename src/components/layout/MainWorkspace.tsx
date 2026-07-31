@@ -13,6 +13,7 @@ import { useFileIngestion } from "@/hooks/useFileIngestion"
 import { useDownload } from "@/hooks/useDownload"
 import type { ConversionOptions, ConversionJob } from "@/types/conversion"
 import type { IngestedFile } from "@/types/upload"
+import { useProcessing } from "@/context/ProcessingContext"
 
 const DEFAULT_OPTIONS: ConversionOptions = {
   quality: 80,
@@ -29,6 +30,7 @@ interface MainWorkspaceProps {
 export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const [options, setOptions] = useState<ConversionOptions>(DEFAULT_OPTIONS)
   const [isDownloading, setIsDownloading] = useState(false)
+  const [ingestError, setIngestError] = useState<string | null>(null)
   // Files staged but not yet converted — waiting for user to confirm settings
   const [staged, setStaged] = useState<IngestedFile[]>([])
 
@@ -36,8 +38,11 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
     useConversionQueue()
   const { ingest } = useFileIngestion()
   const { downloadResult, downloadAll } = useDownload()
+  const { setIsProcessing } = useProcessing()
 
   const isProcessing = total > 0 && !isDone
+
+  useEffect(() => { setIsProcessing(isProcessing) }, [isProcessing, setIsProcessing])
 
   const startedRef = useRef(false)
   useEffect(() => {
@@ -76,11 +81,20 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const handleFiles = useCallback(
     async (files: File[]) => {
       if (files.length === 0) return
+      setIngestError(null)
       const ingested = await ingest(files)
-      if (ingested.length === 0) return
-      setStaged(ingested)
+      if (ingested.length === 0) {
+        setIngestError("No supported images found. The file may contain unsupported formats or be empty.")
+        return
+      }
+      // If we already have results, convert immediately; otherwise stage for settings review
+      if (total > 0) {
+        submit(ingested, optionsRef.current)
+      } else {
+        setStaged(ingested)
+      }
     },
-    [ingest]
+    [ingest, total, submit]
   )
 
   const handleConfirm = useCallback(() => {
@@ -119,8 +133,13 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   // No files yet — dropzone only
   if (total === 0 && staged.length === 0) {
     return (
-      <div className="mx-auto max-w-2xl py-4 pb-16 sm:py-6">
+      <div className="mx-auto max-w-2xl py-4 pb-16 sm:py-6 space-y-3">
         <UploadDropzone onFiles={handleFiles} multiple allowFolder />
+        {ingestError && (
+          <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950/40 dark:text-red-400">
+            {ingestError}
+          </p>
+        )}
       </div>
     )
   }
@@ -162,7 +181,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   // Files in progress or done — two-column on desktop, stacked on mobile
   return (
     <div className="py-4 pb-16 sm:py-6">
-      <div className="grid gap-4 sm:grid-cols-[1fr_420px]">
+      <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_360px]">
 
         {/* On mobile: right col renders first via order utilities so queue/results show at top */}
 
@@ -175,6 +194,12 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
             disabled={isProcessing}
             className="min-h-[140px] sm:flex-1 sm:min-h-[180px]"
           />
+
+          {ingestError && (
+            <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-600 dark:bg-red-950/40 dark:text-red-400">
+              {ingestError}
+            </p>
+          )}
 
           <ComparisonPanel
             jobs={state.jobs}

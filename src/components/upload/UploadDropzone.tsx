@@ -222,7 +222,7 @@ export function UploadDropzone({
         type="file"
         className="sr-only"
         multiple={multiple}
-        accept="image/jpeg,image/png,image/bmp,image/gif,image/heic,image/heif,image/avif,image/svg+xml,.jpg,.jpeg,.png,.bmp,.gif,.heic,.heif,.avif,.svg,.zip"
+        accept="image/jpeg,image/png,image/bmp,image/gif,image/heic,image/heif,image/avif,image/svg+xml,application/zip,application/x-zip-compressed,.jpg,.jpeg,.png,.bmp,.gif,.heic,.heif,.avif,.svg,.zip"
         onChange={(e) => { handleRawFiles(e.target.files); e.target.value = "" }}
         tabIndex={-1}
         aria-hidden

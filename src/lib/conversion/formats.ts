@@ -7,6 +7,7 @@ export const ACCEPTED_MIMES = new Set([
   "image/svg+xml",
   "image/heic",
   "image/heif",
+  "image/webp",
 ])
 
 export const ACCEPTED_EXTENSIONS = new Set([
@@ -19,6 +20,7 @@ export const ACCEPTED_EXTENSIONS = new Set([
   ".heif",
   ".avif",
   ".svg",
+  ".webp",
 ])
 
 export const EXTENSION_TO_MIME: Record<string, string> = {
