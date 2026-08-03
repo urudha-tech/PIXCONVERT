@@ -16,10 +16,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const BASE = "https://squish.urudha.com"
+
 export const metadata: Metadata = {
-  title: "Squish - Fast image tools",
+  metadataBase: new URL(BASE),
+  title: {
+    default: "Squish - Free Online Image Tools",
+    template: "%s | Squish",
+  },
   description:
-    "Convert, compress, crop, remove backgrounds and more. All in your browser. Nothing uploaded.",
+    "Free browser-based image tools: convert to WebP, remove backgrounds, compress images, make PDFs, add watermarks and more. No uploads. No sign-up. Instant results.",
+  keywords: [
+    "image converter", "webp converter", "remove background online", "image compressor",
+    "images to pdf", "bulk image convert", "online image tools", "free image editor",
+    "convert jpg to webp", "background remover", "image tools no upload",
+  ],
+  authors: [{ name: "Urudha", url: BASE }],
+  creator: "Urudha",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: BASE,
+    siteName: "Squish",
+    title: "Squish - Free Online Image Tools",
+    description:
+      "Convert to WebP, remove backgrounds, compress, make PDFs and more. All in your browser. Nothing uploaded.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Squish - Free Online Image Tools",
+    description:
+      "Convert to WebP, remove backgrounds, compress, make PDFs and more. All in your browser. Nothing uploaded.",
+    creator: "@urudha",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
+  },
+  alternates: { canonical: BASE },
 };
 
 export default function RootLayout({
