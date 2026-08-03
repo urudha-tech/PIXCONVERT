@@ -51,7 +51,11 @@ export const metadata: Metadata = {
     "images to video", "video to images", "extract frames from video",
     // general
     "online image tools", "free photo tools", "image tools no upload", "browser image tools",
-    "squish image tool",
+    // brand
+    "squish", "squish image", "squish image tool", "squish compressor", "squish image editor",
+    "squish convert image", "squish remove background", "squish webp", "squish pdf",
+    "squish photo editor", "squish image converter", "squish background remover",
+    "urudha squish", "squish.urudha.com",
   ],
   authors: [{ name: "Urudha", url: BASE }],
   creator: "Urudha",
