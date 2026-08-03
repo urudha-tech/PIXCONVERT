@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface ColorSwatch {
   hex: string
@@ -344,34 +345,15 @@ export default function PalettePage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Precise",
-                body: "Hover or click anywhere on your photo to sample exact pixel colors with a magnifier loupe.",
-              },
-              {
-                title: "Simple",
-                body: "Automatically extract top 8 dominant swatches with percentage coverage breakdowns.",
-              },
-              {
-                title: "Secure",
-                body: "Export HEX, RGB, HSL, or CSS variables instantly without sending your images to cloud servers.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="Extract Color Palette from Any Image"
+          description="Upload any image and Squish instantly extracts the dominant colors. Get HEX codes, RGB values and ready-to-use CSS variables. Perfect for designers matching brand colors or developers building theme systems."
+          features={[
+            { title: "Designer-Ready Output", body: "Copy colors as HEX, RGB or CSS custom properties. Paste directly into Figma, CSS files or design tokens." },
+            { title: "Accurate Color Sampling", body: "Uses perceptual clustering to find the colors your eye actually sees — not just the most frequent pixels." },
+            { title: "Instant and Free", body: "No account, no upload, no wait. Drop an image and get your palette in under a second, entirely in your browser." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

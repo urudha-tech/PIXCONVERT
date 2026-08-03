@@ -9,6 +9,7 @@ import {
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 const ACTIONS = [
   {
@@ -276,6 +277,15 @@ export default function Home() {
             </div>
           </div>
         )}
+        <ToolInfo
+          heading="Free Browser-Based Image Tools"
+          description="Squish is a suite of free image tools that run entirely in your browser. Convert images to WebP, remove backgrounds with AI, compress and reduce image size, make PDFs, add watermarks, edit photos and more — all without uploading anything. Fast, private, and completely free."
+          features={[
+            { title: "Nothing Uploaded", body: "Every tool runs locally in your browser. Your images never touch a server — complete privacy guaranteed." },
+            { title: "No Sign-Up Required", body: "Open the tool, drop your images, done. No account, no email, no subscription. Free forever." },
+            { title: "Bulk Processing", body: "Convert, watermark or remove backgrounds from hundreds of images at once. Download results as a ZIP." },
+          ]}
+        />
       </div>
 
       </div>

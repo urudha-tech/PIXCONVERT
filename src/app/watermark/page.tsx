@@ -9,6 +9,7 @@ import JSZip from "jszip"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 type Position = "top-left" | "top-center" | "top-right" | "center-left" | "center" | "center-right" | "bottom-left" | "bottom-center" | "bottom-right" | "tile"
 
@@ -478,34 +479,15 @@ export default function WatermarkPage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Custom",
-                body: "Overlay custom text or logo image watermarks with font size, opacity, and color controls.",
-              },
-              {
-                title: "Flexible",
-                body: "Position watermarks using a 9-point grid alignment or full tile pattern across photos.",
-              },
-              {
-                title: "Secure",
-                body: "Batch process hundreds of photos locally in your browser and download as a ZIP archive.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="Add Watermark to Images Online Free"
+          description="Protect your photos by adding text or image watermarks in seconds. Squish lets you watermark a whole batch of images at once — set position, opacity, font size and apply to all. No uploads, no sign-up."
+          features={[
+            { title: "Batch Watermarking", body: "Apply the same watermark to dozens of images in one go. Save hours compared to editing photos one by one." },
+            { title: "Text or Image Watermark", body: "Type custom text or upload your logo. Set opacity, size and position exactly where you want it." },
+            { title: "No Quality Loss", body: "Watermarks are composited at full resolution. Your output images are just as sharp as the originals." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

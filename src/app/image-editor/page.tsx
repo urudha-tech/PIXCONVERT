@@ -9,6 +9,7 @@ import {
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface Rect { x: number; y: number; w: number; h: number }
 
@@ -527,6 +528,15 @@ export default function ImageEditorPage() {
             </p>
           </div>
         )}
+        <ToolInfo
+          heading="Free Online Image Editor — No Download Needed"
+          description="Squish is a fast, free image editor that runs entirely in your browser. Crop, rotate, flip, resize, adjust brightness, contrast, saturation and sharpness — all without installing anything or uploading your photos."
+          features={[
+            { title: "Non-Destructive Editing", body: "Every adjustment is applied in real time so you can see changes instantly. Undo at any step before downloading." },
+            { title: "Full Resize Control", body: "Set exact pixel dimensions or scale by percentage. Lock aspect ratio to avoid stretching." },
+            { title: "Private by Design", body: "Your photos stay on your device. No cloud, no server — everything happens locally in your browser." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

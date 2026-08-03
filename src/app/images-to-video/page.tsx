@@ -5,6 +5,7 @@ import { Film, Download, X, Loader2, ArrowUpDown } from "lucide-react"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface ImageItem {
   id: string
@@ -342,6 +343,15 @@ export default function ImagesToVideoPage() {
             </p>
           </div>
         )}
+        <ToolInfo
+          heading="Turn Images into a Video Online Free"
+          description="Squish combines a sequence of images into a smooth WebM video in your browser. Upload your frames, set the frame rate, and download a ready-to-use video in seconds — no software to install, no files uploaded."
+          features={[
+            { title: "Custom Frame Rate", body: "Set any frame rate from 1 to 60 fps. Control the speed and duration of your video precisely." },
+            { title: "Accepts ZIP Input", body: "Drop a ZIP file of images and Squish extracts and sequences them automatically — no manual sorting needed." },
+            { title: "Instant WebM Output", body: "Output is WebM, supported by all modern browsers and video editors. Download and use immediately." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

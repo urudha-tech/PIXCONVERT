@@ -7,6 +7,7 @@ import { formatBytes } from "@/lib/utils/fileUtils"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface BgFile {
   id: string
@@ -295,34 +296,15 @@ export default function RemoveBgPage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Smart",
-                body: "Powered by background-removal AI models for automatic cutout detection.",
-              },
-              {
-                title: "Simple",
-                body: "Drop your photos and get transparent PNG outputs instantly.",
-              },
-              {
-                title: "Secure",
-                body: "Runs AI models directly in WebAssembly/ONNX inside your browser - zero cloud uploads.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="Free AI Background Remover"
+          description="Squish removes image backgrounds directly in your browser using AI — no uploads, no account needed. Works on portraits, product photos, logos and objects. The result is a transparent PNG you can use anywhere."
+          features={[
+            { title: "100% Private", body: "Your images never leave your device. All AI processing runs locally in WebAssembly — nothing is sent to any server." },
+            { title: "Works on Any Subject", body: "Optimised for people, products, animals and objects. The model handles complex edges like hair and fur." },
+            { title: "Instant Download", body: "Get a transparent PNG in seconds. Use it in design tools, presentations, e-commerce listings or anywhere else." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

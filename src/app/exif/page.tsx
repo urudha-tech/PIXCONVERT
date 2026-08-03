@@ -9,6 +9,7 @@ import Link from "next/link"
 import exifr from "exifr"
 import { Navbar } from "@/components/layout/Navbar"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface ExifData {
   make?: string
@@ -332,34 +333,15 @@ export default function ExifPage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Detailed",
-                body: "Inspect camera hardware, ISO, aperture, shutter speed, timestamp, and GPS map location.",
-              },
-              {
-                title: "Simple",
-                body: "View summary cards or browse the full raw EXIF tag table in a clean, readable layout.",
-              },
-              {
-                title: "Secure",
-                body: "Strip sensitive camera and location EXIF tags with one click before sharing photos online.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="EXIF Metadata Viewer and Remover"
+          description="Every photo taken with a camera or phone stores hidden metadata: GPS coordinates, camera model, lens settings, timestamps and more. Squish lets you view and strip this EXIF data instantly — all in your browser, nothing uploaded."
+          features={[
+            { title: "See Hidden GPS Data", body: "Find out exactly where a photo was taken. View latitude, longitude and altitude stored invisibly in your image files." },
+            { title: "Strip for Privacy", body: "Remove all EXIF metadata before sharing photos online. Protect your location, device info and shooting conditions." },
+            { title: "All Formats Supported", body: "Works with JPG, PNG, HEIC, AVIF and WebP. Reads all standard EXIF, IPTC and XMP metadata fields." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

@@ -6,6 +6,7 @@ import Link from "next/link"
 import JSZip from "jszip"
 import { Navbar } from "@/components/layout/Navbar"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 type OutputFormat = "webp" | "png"
 
@@ -736,34 +737,15 @@ export default function VideoPage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Precise",
-                body: "Extract exact video frames at any FPS, custom time range, or custom resolution.",
-              },
-              {
-                title: "Flexible",
-                body: "Preview extracted frames live, crop watermarks, and download as a ZIP package.",
-              },
-              {
-                title: "Secure",
-                body: "Processes your video files locally using HTML5 Video and OffscreenCanvas.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="Extract Frames from Video Online"
+          description="Convert any video into individual image frames directly in your browser. Set the frame interval, choose WebP or PNG output, and download a ZIP of all extracted frames. No upload required — works with MP4, WebM, MOV and more."
+          features={[
+            { title: "Any Frame Rate", body: "Extract every frame, every second, or set a custom interval. Works on short clips and long videos alike." },
+            { title: "WebP or PNG Output", body: "Choose WebP for smaller file sizes or PNG for lossless quality. All frames download as a single ZIP." },
+            { title: "Watermark Removal", body: "Draw a region over a watermark and it will be erased from every extracted frame automatically." },
+          ]}
+        />
       </div>
       </PageCard>
     </>
