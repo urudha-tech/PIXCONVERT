@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Zap } from "lucide-react"
@@ -31,7 +31,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const [options, setOptions] = useState<ConversionOptions>(DEFAULT_OPTIONS)
   const [isDownloading, setIsDownloading] = useState(false)
   const [ingestError, setIngestError] = useState<string | null>(null)
-  // Files staged but not yet converted — waiting for user to confirm settings
+  // Files staged but not yet converted - waiting for user to confirm settings
   const [staged, setStaged] = useState<IngestedFile[]>([])
 
   const { state, submit, reset, resubmitAll, hasFiles, getOriginalUrl, completed, total, isDone, progress } =
@@ -59,7 +59,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const pendingReconvertRef = useRef(false)
 
   // When quality, lossless, or targetSizeKb changes after conversion is done, reconvert.
-  // If conversion is still running, set a flag — the isDone effect below picks it up.
+  // If conversion is still running, set a flag - the isDone effect below picks it up.
   useEffect(() => {
     if (!hasFiles) return
     if (!isDone) { pendingReconvertRef.current = true; return }
@@ -130,7 +130,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
   const elapsed =
     state.startedAt && state.completedAt ? state.completedAt - state.startedAt : null
 
-  // No files yet — dropzone only
+  // No files yet - dropzone only
   if (total === 0 && staged.length === 0) {
     return (
       <div className="mx-auto max-w-2xl py-4 pb-16 sm:py-6 space-y-3">
@@ -144,7 +144,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
     )
   }
 
-  // Files staged — show settings confirmation before converting
+  // Files staged - show settings confirmation before converting
   if (staged.length > 0 && total === 0) {
     return (
       <div className="mx-auto max-w-lg py-4 pb-16 space-y-3 sm:py-6 sm:space-y-4">
@@ -178,7 +178,7 @@ export function MainWorkspace({ initialFiles, onClose }: MainWorkspaceProps) {
     )
   }
 
-  // Files in progress or done — two-column on desktop, stacked on mobile
+  // Files in progress or done - two-column on desktop, stacked on mobile
   return (
     <div className="py-4 pb-16 sm:py-6">
       <div className="grid gap-4 sm:grid-cols-[minmax(0,1fr)_360px]">

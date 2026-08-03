@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
@@ -135,7 +135,7 @@ export default function Home() {
             Drop your images, pick an action
           </h1>
           <p className="mt-3 text-sm text-neutral-500">
-            Bulk convert, remove backgrounds, make PDFs and more — all in your browser. Nothing uploaded.
+            Bulk convert, remove backgrounds, make PDFs and more - all in your browser. Nothing uploaded.
           </p>
         </div>
 
@@ -163,7 +163,7 @@ export default function Home() {
                   Drop images here, or click to browse
                 </p>
                 <p className="mt-1 text-xs text-neutral-400">
-                  JPG · PNG · HEIC · WebP · GIF · AVIF · SVG · ZIP — any amount
+                  JPG · PNG · HEIC · WebP · GIF · AVIF · SVG · ZIP - any amount
                 </p>
               </div>
             </>
@@ -216,7 +216,7 @@ export default function Home() {
           onChange={(e) => { addFiles(Array.from(e.target.files ?? [])); e.target.value = "" }}
         />
 
-        {/* Action cards — shown after files are dropped */}
+        {/* Action cards - shown after files are dropped */}
         {dropped.length > 0 && (
           <div className="mt-6">
             <p className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">
@@ -251,7 +251,7 @@ export default function Home() {
           </div>
         )}
 
-        {/* Direct links — shown when no files dropped */}
+        {/* Direct links - shown when no files dropped */}
         {dropped.length === 0 && (
           <div className="mt-10">
             <p className="mb-3 text-xs font-medium uppercase tracking-wider text-neutral-400">

@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useProcessing } from "@/context/ProcessingContext"
 
@@ -41,7 +41,7 @@ export function RibbonBackground() {
         )
       })}
 
-      {/* Yellow tint overlay — multiply blend turns white chevrons yellow, black stays black */}
+      {/* Yellow tint overlay - multiply blend turns white chevrons yellow, black stays black */}
       <div
         className="absolute inset-0 transition-opacity duration-500"
         style={{

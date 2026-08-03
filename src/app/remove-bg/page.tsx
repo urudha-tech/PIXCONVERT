@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useCallback, useRef, useEffect } from "react"
 import { ArrowLeft, Download, X, Loader2, Eraser } from "lucide-react"
@@ -124,7 +124,7 @@ export default function RemoveBgPage() {
             Remove Background
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            AI-powered background removal. Runs entirely in your browser — nothing uploaded.
+            AI-powered background removal. Runs entirely in your browser - nothing uploaded.
           </p>
         </div>
 
@@ -290,7 +290,7 @@ export default function RemoveBgPage() {
             )}
 
             <p className="text-center text-xs text-neutral-400">
-              First run downloads the AI model (~50 MB) — subsequent runs are instant.
+              First run downloads the AI model (~50 MB) - subsequent runs are instant.
             </p>
           </div>
         )}
@@ -308,7 +308,7 @@ export default function RemoveBgPage() {
               },
               {
                 title: "Secure",
-                body: "Runs AI models directly in WebAssembly/ONNX inside your browser — zero cloud uploads.",
+                body: "Runs AI models directly in WebAssembly/ONNX inside your browser - zero cloud uploads.",
               },
             ].map((item) => (
               <div

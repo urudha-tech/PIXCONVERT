@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import {
@@ -523,7 +523,7 @@ export default function ImageEditorPage() {
             )}
 
             <p className="text-center text-xs text-neutral-400">
-              Nothing is uploaded — all edits happen locally in your browser.
+              Nothing is uploaded - all edits happen locally in your browser.
             </p>
           </div>
         )}

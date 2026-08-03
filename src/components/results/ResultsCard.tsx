@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { CheckCircle2, AlertCircle } from "lucide-react"
 import { formatBytes } from "@/lib/utils/fileUtils"
@@ -30,8 +30,8 @@ export function ResultsCard({ jobs, elapsed }: ResultsCardProps) {
       <div className="grid grid-cols-4 gap-2">
         <Stat label="Converted" value={String(completed.length)} />
         <Stat label="Failed" value={String(failed.length)} highlight={failed.length > 0 ? "red" : undefined} />
-        <Stat label="Size saved" value={saved > 0 ? formatBytes(saved) : "—"} highlight={saved > 0 ? "green" : undefined} />
-        <Stat label="Reduction" value={savedPct > 0 ? `${savedPct}%` : "—"} />
+        <Stat label="Size saved" value={saved > 0 ? formatBytes(saved) : "-"} highlight={saved > 0 ? "green" : undefined} />
+        <Stat label="Reduction" value={savedPct > 0 ? `${savedPct}%` : "-"} />
       </div>
 
       {failed.length > 0 && (

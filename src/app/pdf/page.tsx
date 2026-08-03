@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useCallback, useRef, useEffect } from "react"
 import { UploadDropzone } from "@/components/upload/UploadDropzone"
@@ -149,7 +149,7 @@ export default function PDFPage() {
             Images to PDF
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Combine multiple images into a single PDF. Runs entirely in your browser — nothing uploaded.
+            Combine multiple images into a single PDF. Runs entirely in your browser - nothing uploaded.
           </p>
         </div>
 
@@ -281,7 +281,7 @@ export default function PDFPage() {
               },
               {
                 title: "Secure",
-                body: "All PDF creation runs client-side using pdf-lib — no server uploads.",
+                body: "All PDF creation runs client-side using pdf-lib - no server uploads.",
               },
             ].map((item) => (
               <div

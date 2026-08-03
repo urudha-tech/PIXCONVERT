@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
@@ -86,7 +86,7 @@ export function ImageComparison({
       )}
       style={{ minHeight: 200 }}
     >
-      {/* AFTER (WebP) — full width underneath */}
+      {/* AFTER (WebP) - full width underneath */}
       <img
         src={afterSrc}
         alt="Converted WebP"
@@ -95,7 +95,7 @@ export function ImageComparison({
         style={{ maxHeight: 480 }}
       />
 
-      {/* BEFORE (original) — clipped to left of divider */}
+      {/* BEFORE (original) - clipped to left of divider */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - position}% 0 0)` }}

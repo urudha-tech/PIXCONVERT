@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import { ImageComparison } from "./ImageComparison"
@@ -32,7 +32,7 @@ export function ComparisonPanel({ jobs, getOriginalUrl }: ComparisonPanelProps) 
           Compare
         </h3>
 
-        {/* Compact dropdown — replaces the pill grid */}
+        {/* Compact dropdown - replaces the pill grid */}
         {completed.length > 1 && (
           <select
             value={selectedId}

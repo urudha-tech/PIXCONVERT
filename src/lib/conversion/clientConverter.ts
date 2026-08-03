@@ -1,4 +1,4 @@
-import type { ConversionOptions } from "@/types/conversion"
+﻿import type { ConversionOptions } from "@/types/conversion"
 import { isHeic } from "./formats"
 
 export interface ClientConvertResult {
@@ -20,7 +20,7 @@ async function decodeToCanvas(source: File | Blob): Promise<HTMLCanvasElement> {
     }
     img.onerror = () => {
       URL.revokeObjectURL(url)
-      reject(new Error("Failed to decode image — unsupported or corrupted file."))
+      reject(new Error("Failed to decode image - unsupported or corrupted file."))
     }
     img.src = url
   })

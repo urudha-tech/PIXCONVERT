@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Caudex, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { FilesProvider } from "@/context/FilesContext";
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Squish — Fast image tools",
+  title: "Squish - Fast image tools",
   description:
     "Convert, compress, crop, remove backgrounds and more. All in your browser. Nothing uploaded.",
 };

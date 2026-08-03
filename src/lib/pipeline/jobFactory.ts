@@ -1,4 +1,4 @@
-import { v4 as uuidv4 } from "uuid"
+﻿import { v4 as uuidv4 } from "uuid"
 import type { IngestedFile } from "@/types/upload"
 import type { ConversionJob, ConversionOptions } from "@/types/conversion"
 import { validateFile } from "@/lib/conversion/validators"
@@ -34,7 +34,7 @@ export function createJobs(
   }) as ConversionJob[]
 }
 
-// Attach file data needed for upload — stored separately from the job type
+// Attach file data needed for upload - stored separately from the job type
 export interface JobWithFile extends ConversionJob {
   _ingestedFile?: IngestedFile
 }

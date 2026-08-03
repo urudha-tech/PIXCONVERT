@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState } from "react"
 import Link from "next/link"
@@ -25,7 +25,7 @@ export function Navbar() {
     <nav className="sticky top-0 z-30 border-b border-neutral-100 bg-white/90 backdrop-blur-md dark:border-neutral-900 dark:bg-neutral-950/90">
       <div className="flex items-center w-full px-4 sm:px-16 py-2 gap-4 sm:gap-16">
 
-        {/* Brand — pinned left */}
+        {/* Brand - pinned left */}
         <Link
           href="/"
           className="flex items-center gap-2.5 shrink-0 text-[1.5rem] sm:text-[2rem] text-neutral-900 dark:text-neutral-100 tracking-wide border-2 border-neutral-200 dark:border-neutral-700 rounded-full pl-1 pr-3 py-0.5"
@@ -40,7 +40,7 @@ export function Navbar() {
           <span style={{ transform: "translateY(-3px)", display: "inline-block" }}>SQUISH</span>
         </Link>
 
-        {/* Desktop links — fill remaining space evenly */}
+        {/* Desktop links - fill remaining space evenly */}
         <div className="hidden sm:flex items-center gap-1 flex-1 min-w-0">
           {links.map(({ href, label, short }) => {
             const active = pathname === href

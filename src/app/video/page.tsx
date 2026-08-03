@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Film, Download, X, Loader2, ArrowLeft, Image, Crosshair } from "lucide-react"
@@ -149,7 +149,7 @@ function RegionSelector({
 
   return (
     <div className="space-y-2 mt-2">
-      <p className="text-xs text-neutral-500">Drag a box over the watermark — this region will be erased from every frame</p>
+      <p className="text-xs text-neutral-500">Drag a box over the watermark - this region will be erased from every frame</p>
       <div
         ref={containerRef}
         onMouseDown={(e) => {
@@ -230,7 +230,7 @@ export default function VideoPage() {
     }
   }, [])
 
-  // Watermark state — rect + preview dimensions persist across extractions
+  // Watermark state - rect + preview dimensions persist across extractions
   const [removeWatermark, setRemoveWatermark] = useState(false)
   const [selectingRegion, setSelectingRegion] = useState(false)
   const [wmPreviewUrl, setWmPreviewUrl] = useState<string | null>(null)
@@ -441,7 +441,7 @@ export default function VideoPage() {
             Video to Images
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Extract frames as WebP or PNG. Runs entirely in your browser — nothing uploaded.
+            Extract frames as WebP or PNG. Runs entirely in your browser - nothing uploaded.
           </p>
         </div>
 
@@ -585,7 +585,7 @@ export default function VideoPage() {
                 </div>
               )}
 
-              {/* Remove background — shown when hardware GPU is detected */}
+              {/* Remove background - shown when hardware GPU is detected */}
               {gpuAvailable && (
                 <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
                   <input type="checkbox" checked={removeBg} onChange={(e) => setRemoveBg(e.target.checked)} className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100" />
@@ -641,7 +641,7 @@ export default function VideoPage() {
                 {/* Show confirmed region summary */}
                 {removeWatermark && !selectingRegion && wmRect && (
                   <p className="mt-1.5 text-xs text-emerald-600 dark:text-emerald-500">
-                    Region set — will be removed from every frame
+                    Region set - will be removed from every frame
                   </p>
                 )}
 
@@ -655,7 +655,7 @@ export default function VideoPage() {
               {/* Skip preview */}
               <label className="flex cursor-pointer items-center gap-3 px-4 py-3">
                 <input type="checkbox" checked={skipPreview} onChange={(e) => setSkipPreview(e.target.checked)} className="h-4 w-4 accent-neutral-900 dark:accent-neutral-100" />
-                <span className="text-sm text-neutral-700 dark:text-neutral-300">Skip preview — just download the ZIP</span>
+                <span className="text-sm text-neutral-700 dark:text-neutral-300">Skip preview - just download the ZIP</span>
               </label>
             </div>
 

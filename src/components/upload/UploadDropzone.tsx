@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useCallback, useEffect, useRef, useState } from "react"
 import { Upload, FolderOpen, FileArchive } from "lucide-react"
@@ -31,7 +31,7 @@ export function UploadDropzone({
   const onFilesRef = useRef(onFiles)
   onFilesRef.current = onFiles
 
-  // Create the webkitdirectory input imperatively — React strips the attribute during reconciliation
+  // Create the webkitdirectory input imperatively - React strips the attribute during reconciliation
   useEffect(() => {
     const container = folderMountRef.current
     if (!container || folderInputRef.current) return
@@ -103,7 +103,7 @@ export function UploadDropzone({
           setStatus(null) // user cancelled
           return
         }
-        // API blocked (e.g. Brave Shields) — fall through to webkitdirectory
+        // API blocked (e.g. Brave Shields) - fall through to webkitdirectory
       }
     }
 
@@ -111,6 +111,28 @@ export function UploadDropzone({
     setFolderTip(true)
     folderInputRef.current?.click()
   }, [])
+
+  // Global paste handler - works anywhere on the page
+  useEffect(() => {
+    const handlePaste = (e: ClipboardEvent) => {
+      if (disabled) return
+      const items = e.clipboardData?.items
+      if (!items) return
+      const files: FileWithPath[] = []
+      for (const item of Array.from(items)) {
+        if (item.kind === "file") {
+          const file = item.getAsFile()
+          if (file) files.push(file as FileWithPath)
+        }
+      }
+      if (files.length > 0) {
+        e.preventDefault()
+        onFilesRef.current(files)
+      }
+    }
+    document.addEventListener("paste", handlePaste)
+    return () => document.removeEventListener("paste", handlePaste)
+  }, [disabled])
 
   const onDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -127,7 +149,7 @@ export function UploadDropzone({
 
     const items = e.dataTransfer.items
     if (items && items.length > 0) {
-      // Check if any dropped item is a directory — use webkitGetAsEntry for recursive walk
+      // Check if any dropped item is a directory - use webkitGetAsEntry for recursive walk
       const entries = Array.from(items)
         .map((i) => i.webkitGetAsEntry?.())
         .filter(Boolean) as FileSystemEntry[]
@@ -154,23 +176,33 @@ export function UploadDropzone({
     <div
       role="button"
       tabIndex={0}
-      aria-label="Upload images — click to browse or drag and drop"
+      aria-label="Upload images - click to browse or drag and drop"
       className={cn(
-        "relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-8 text-center transition-colors outline-none sm:gap-4 sm:px-8 sm:py-12",
-      className,
+        "relative flex flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-8 text-center outline-none sm:gap-4 sm:px-8 sm:py-12",
+        "transition-all duration-200",
+        className,
         isDragging
-          ? "border-neutral-400 bg-neutral-50 dark:border-neutral-500 dark:bg-neutral-900"
+          ? "border-neutral-500 bg-neutral-50 dark:border-neutral-400 dark:bg-neutral-900 scale-[1.02]"
           : "border-neutral-200 hover:border-neutral-300 dark:border-neutral-800 dark:hover:border-neutral-700",
         disabled && "pointer-events-none opacity-50"
       )}
+      style={isDragging ? {
+        boxShadow: "0 0 0 4px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.10)",
+      } : undefined}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}
       onClick={(e) => { e.stopPropagation(); inputRef.current?.click() }}
       onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") inputRef.current?.click() }}
     >
-      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
-        <Upload className="h-5 w-5 text-neutral-500" />
+      <div className={cn(
+        "flex h-12 w-12 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 transition-transform duration-200",
+        isDragging && "scale-110"
+      )}>
+        <Upload className={cn(
+          "h-5 w-5 transition-colors duration-200",
+          isDragging ? "text-neutral-700 dark:text-neutral-200" : "text-neutral-500"
+        )} />
       </div>
 
       <div>
@@ -228,7 +260,7 @@ export function UploadDropzone({
         aria-hidden
       />
 
-      {/* Folder fallback input — webkitdirectory set imperatively */}
+      {/* Folder fallback input - webkitdirectory set imperatively */}
       <span ref={folderMountRef} aria-hidden />
     </div>
   )

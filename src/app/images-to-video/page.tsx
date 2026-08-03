@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useState, useRef, useCallback, useEffect } from "react"
 import { Film, Download, X, Loader2, ArrowUpDown } from "lucide-react"
@@ -204,7 +204,7 @@ export default function ImagesToVideoPage() {
         <div className="mb-6">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">Images to Video</h1>
           <p className="mt-1 text-sm text-neutral-500">
-            Combine images into a WebM video. Runs entirely in your browser — nothing uploaded.
+            Combine images into a WebM video. Runs entirely in your browser - nothing uploaded.
           </p>
         </div>
 
@@ -298,7 +298,7 @@ export default function ImagesToVideoPage() {
             {status === "done" && (
               <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-emerald-400 flex items-center gap-2">
                 <Download className="h-4 w-4 shrink-0" />
-                Video downloaded — open in any browser or media player.
+                Video downloaded - open in any browser or media player.
               </div>
             )}
 
@@ -338,7 +338,7 @@ export default function ImagesToVideoPage() {
             </div>
 
             <p className="text-center text-xs text-neutral-400">
-              Output is WebM — supported by all modern browsers. Generation happens in real-time (1× speed).
+              Output is WebM - supported by all modern browsers. Generation happens in real-time (1× speed).
             </p>
           </div>
         )}

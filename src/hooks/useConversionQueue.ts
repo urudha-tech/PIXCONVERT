@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { useReducer, useCallback, useRef } from "react"
 import { jobQueueReducer, initialQueueState } from "@/lib/queue/jobQueue"
@@ -96,7 +96,7 @@ export function useConversionQueue() {
     async (options: ConversionOptions) => {
       const files = lastIngestedRef.current
       if (files.length === 0) return
-      // Revoke old URLs — new ones will be created on completion
+      // Revoke old URLs - new ones will be created on completion
       originalUrlsRef.current.forEach((url) => URL.revokeObjectURL(url))
       originalUrlsRef.current.clear()
       fileMapRef.current.clear()

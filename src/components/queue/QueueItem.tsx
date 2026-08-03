@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import { CheckCircle2, XCircle, Clock, Loader2, Download } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -74,7 +74,7 @@ export function QueueItem({ job, onDownload }: QueueItemProps) {
             </p>
             {job.result.targetMissed && (
               <p className="mt-0.5 text-xs text-amber-600 dark:text-amber-400">
-                Best achievable — can't compress below {formatBytes(job.result.outputSize)}
+                Best achievable - can't compress below {formatBytes(job.result.outputSize)}
               </p>
             )}
           </>
