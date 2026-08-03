@@ -25,11 +25,33 @@ export const metadata: Metadata = {
     template: "%s | Squish",
   },
   description:
-    "Free browser-based image tools: convert to WebP, remove backgrounds, compress images, make PDFs, add watermarks and more. No uploads. No sign-up. Instant results.",
+    "Free online image tools: compress images, convert to WebP, remove backgrounds, reduce image size, make PDFs, add watermarks and more. No uploads. No sign-up. Instant results.",
   keywords: [
-    "image converter", "webp converter", "remove background online", "image compressor",
-    "images to pdf", "bulk image convert", "online image tools", "free image editor",
-    "convert jpg to webp", "background remover", "image tools no upload",
+    // converters
+    "image converter", "webp converter", "convert jpg to webp", "convert png to webp",
+    "bulk image converter", "image format converter", "online image converter free",
+    // compression / size
+    "image compressor", "compress image online", "reduce image size", "image size reducer",
+    "compress jpg online", "compress png online", "reduce photo size", "image optimizer",
+    "make image smaller", "resize image online free", "image file size reducer",
+    // background removal
+    "remove background online", "background remover", "remove image background free",
+    "background eraser", "transparent background maker", "cut out background",
+    // editor
+    "free image editor", "best image editor online", "photo editor online free",
+    "crop image online", "rotate image online", "image editor no download",
+    // PDF
+    "images to pdf", "jpg to pdf", "png to pdf", "combine images into pdf",
+    "convert photos to pdf online free",
+    // watermark
+    "add watermark to image", "watermark photo online", "batch watermark images",
+    // EXIF / metadata
+    "exif viewer", "image metadata viewer", "remove exif data", "strip gps from photo",
+    // video
+    "images to video", "video to images", "extract frames from video",
+    // general
+    "online image tools", "free photo tools", "image tools no upload", "browser image tools",
+    "squish image tool",
   ],
   authors: [{ name: "Urudha", url: BASE }],
   creator: "Urudha",

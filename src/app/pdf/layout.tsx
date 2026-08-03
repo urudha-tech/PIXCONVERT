@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Images to PDF",
+  title: "Images to PDF Converter",
   description:
-    "Combine multiple images into a single PDF in your browser. Custom page sizes, drag-to-reorder, no server uploads.",
+    "Convert JPG, PNG and photos to PDF free online. Combine multiple images into one PDF, set page sizes, drag to reorder. No uploads, instant download.",
   alternates: { canonical: "https://squish.urudha.com/pdf" },
 }
 

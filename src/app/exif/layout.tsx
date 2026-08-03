@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "EXIF Viewer - Image Metadata",
+  title: "EXIF Viewer - View and Remove Image Metadata",
   description:
-    "View and strip EXIF metadata from images: GPS location, camera settings, timestamps and more. Runs entirely in your browser.",
+    "View EXIF metadata from photos online free. See GPS location, camera settings, timestamps. Strip and remove EXIF data for privacy. No uploads needed.",
   alternates: { canonical: "https://squish.urudha.com/exif" },
 }
 

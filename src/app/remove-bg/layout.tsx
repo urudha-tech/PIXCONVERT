@@ -1,9 +1,9 @@
 ﻿import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Remove Image Background",
+  title: "Remove Image Background Free",
   description:
-    "AI-powered background remover that runs entirely in your browser. No uploads, no sign-up. Works on portraits, objects and products.",
+    "Remove image background free online. AI-powered background eraser - no uploads, no sign-up. Make transparent backgrounds instantly. Works on portraits, products and objects.",
   alternates: { canonical: "https://squish.urudha.com/remove-bg" },
 }
 
