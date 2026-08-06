@@ -214,13 +214,13 @@ export default function RemoveBgPage() {
                   {/* Images side by side */}
                   <div className="grid grid-cols-2 bg-[url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2216%22%20height%3D%2216%22%3E%3Crect%20width%3D%228%22%20height%3D%228%22%20fill%3D%22%23e5e5e5%22/%3E%3Crect%20x%3D%228%22%20y%3D%228%22%20width%3D%228%22%20height%3D%228%22%20fill%3D%22%23e5e5e5%22/%3E%3C/svg%3E')]">
                     <div className="relative aspect-square">
-                      <img src={entry.originalUrl} alt="original" className="h-full w-full object-cover" />
+                      <img src={entry.originalUrl} alt={`Original: ${entry.file.name}`} className="h-full w-full object-cover" />
                       <span className="absolute bottom-1 left-1 rounded bg-black/50 px-1 py-0.5 text-[10px] text-white">Original</span>
                     </div>
                     <div className="relative aspect-square bg-[repeating-conic-gradient(#d4d4d4_0%_25%,white_0%_50%)] bg-[length:16px_16px]">
                       {entry.status === "done" && entry.resultUrl ? (
                         <>
-                          <img src={entry.resultUrl} alt="result" className="h-full w-full object-cover" />
+                          <img src={entry.resultUrl} alt={`Background removed: ${entry.file.name}`} className="h-full w-full object-cover" />
                           <span className="absolute bottom-1 right-1 rounded bg-black/50 px-1 py-0.5 text-[10px] text-white">Result</span>
                         </>
                       ) : entry.status === "processing" ? (

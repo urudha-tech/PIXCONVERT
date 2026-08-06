@@ -8,6 +8,7 @@ import Link from "next/link"
 import { Navbar } from "@/components/layout/Navbar"
 import { usePendingFiles } from "@/context/FilesContext"
 import { PageCard } from "@/components/layout/PageCard"
+import { ToolInfo } from "@/components/layout/ToolInfo"
 
 interface PDFFile {
   id: string
@@ -268,34 +269,15 @@ export default function PDFPage() {
           </div>
         )}
 
-        <div className="mt-16 border-t border-neutral-100 dark:border-neutral-900 pt-10">
-          <div className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Flexible",
-                body: "Choose from Fit, A4, or Letter page formats with automatic scaling.",
-              },
-              {
-                title: "Simple",
-                body: "Drag & drop multiple images, reorder with arrow controls, and compile with one click.",
-              },
-              {
-                title: "Secure",
-                body: "All PDF creation runs client-side using pdf-lib - no server uploads.",
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="rounded-xl border border-neutral-100 p-5 dark:border-neutral-900 bg-neutral-50/50 dark:bg-neutral-900/30"
-              >
-                <h3 className="text-sm font-semibold text-neutral-900 dark:text-neutral-100">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-xs leading-relaxed text-neutral-500">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ToolInfo
+          heading="Free Images to PDF Converter Online"
+          description="Squish combines JPG, PNG and other images into a single PDF document in your browser. Drag to reorder pages before converting, choose A4, Letter or fit-to-image sizing, and download your PDF instantly — no uploads, no account required."
+          features={[
+            { title: "Drag to Reorder", body: "Arrange your images in any order before converting. Move pages up or down with arrow controls until the sequence is right." },
+            { title: "Three Page Sizes", body: "Choose Fit to preserve original image dimensions, A4 for standard document size, or US Letter for North American printing." },
+            { title: "Client-Side Only", body: "PDF generation runs in your browser using pdf-lib. No image data is ever sent to a server. Works offline once loaded." },
+          ]}
+        />
       </div>
       </PageCard>
     </>

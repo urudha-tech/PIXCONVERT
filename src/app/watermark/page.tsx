@@ -267,7 +267,7 @@ export default function WatermarkPage() {
 
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
-            Batch Image Watermarker
+            Add Watermark to Images
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
             Overlay custom text or logo watermarks across multiple images with 9-point grid alignment or tile grid.

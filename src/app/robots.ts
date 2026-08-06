@@ -1,11 +1,14 @@
-﻿import type { MetadataRoute } from "next"
-
-const BASE = "https://squish.urudha.com"
+import type { MetadataRoute } from "next"
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: `${BASE}/sitemap.xml`,
-    host: BASE,
+    rules: [
+      {
+        userAgent: "*",
+        allow: "/",
+        disallow: ["/api/", "/_next/"],
+      },
+    ],
+    sitemap: "https://squish.urudha.com/sitemap.xml",
   }
 }

@@ -124,7 +124,7 @@ export default function ExifPage() {
 
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
-            EXIF Viewer & Privacy Sanitizer
+            EXIF Viewer
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
             Inspect metadata, camera settings, and GPS location. Strip sensitive information with one click.

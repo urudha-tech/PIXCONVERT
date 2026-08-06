@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
 
@@ -32,10 +33,8 @@ export function Navbar() {
           style={{ fontFamily: "'Abolition', sans-serif" }}
         >
           <div className="h-9 w-9 rounded-full overflow-hidden shrink-0">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/squish-logo-light.png" alt="Squish logo" className="h-full w-full object-cover dark:hidden" />
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/squish-logo-dark.png" alt="Squish logo" className="h-full w-full object-cover hidden dark:block" />
+            <Image src="/squish-logo-light.png" alt="Squish logo" width={36} height={36} className="h-full w-full object-cover dark:hidden" priority />
+            <Image src="/squish-logo-dark.png" alt="Squish logo" width={36} height={36} className="h-full w-full object-cover hidden dark:block" priority />
           </div>
           <span style={{ transform: "translateY(-3px)", display: "inline-block" }}>SQUISH</span>
         </Link>

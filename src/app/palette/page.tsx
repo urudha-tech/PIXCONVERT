@@ -197,7 +197,7 @@ export default function PalettePage() {
 
         <div className="mb-8">
           <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-100">
-            Color Palette Extractor & Color Picker
+            Color Palette Extractor
           </h1>
           <p className="mt-1 text-sm text-neutral-500">
             Extract dominant swatches from any image or hover/click to inspect exact pixel colors.
