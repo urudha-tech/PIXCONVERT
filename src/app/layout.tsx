@@ -60,9 +60,13 @@ export const metadata: Metadata = {
   authors: [{ name: "Urudha", url: BASE }],
   creator: "Urudha",
   icons: {
-    icon: "/squish-logo.jpeg",
-    shortcut: "/squish-logo.jpeg",
-    apple: "/squish-logo.jpeg",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   openGraph: {
     type: "website",
